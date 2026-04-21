@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Award,
@@ -137,13 +138,13 @@ export function LandingPage() {
               noticeboards. No politics. Just real jobs in your area.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#"
+              <Link
+                href="/apply"
                 className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
               >
                 Become an Affiliate
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
+              </Link>
               <a
                 href="#directory"
                 className="inline-flex h-14 items-center justify-center rounded-lg border border-white/15 px-8 text-base font-semibold text-primary-foreground transition-colors hover:bg-white/10"
@@ -359,13 +360,13 @@ export function LandingPage() {
                 in the public directory the same week.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#"
+                <Link
+                  href="/apply"
                   className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
                 >
                   Become an Affiliate
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="inline-flex h-14 items-center justify-center rounded-lg border border-white/15 px-8 text-base font-semibold text-primary-foreground transition-colors hover:bg-white/10"
@@ -382,12 +383,12 @@ export function LandingPage() {
         <div className="container mx-auto px-4 py-14 sm:px-6">
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             <div className="lg:col-span-2">
-              <a href="#" className="flex items-center gap-2">
+              <Link href="/" className="flex items-center gap-2">
                 <LogoMark />
                 <span className="font-display text-lg font-bold">
                   FireDoor <span className="text-accent">Network</span>
                 </span>
-              </a>
+              </Link>
               <p className="mt-4 max-w-sm text-sm text-primary-foreground/60">
                 The UK network connecting verified fire door surveyors and
                 inspectors with the clients who need them.
@@ -399,9 +400,9 @@ export function LandingPage() {
               </h4>
               <ul className="mt-4 space-y-2 text-sm text-primary-foreground/60">
                 <li>
-                  <a href="#" className="transition-colors hover:text-accent">
+                  <Link href="/apply" className="transition-colors hover:text-accent">
                     Apply now
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#how" className="transition-colors hover:text-accent">

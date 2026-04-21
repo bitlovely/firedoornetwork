@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Flame, Menu, X } from "lucide-react";
 
@@ -16,14 +17,14 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-primary/80 backdrop-blur-md">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
-        <a href="#" className="flex items-center gap-2 text-primary-foreground">
+        <Link href="/" className="flex items-center gap-2 text-primary-foreground">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-gradient shadow-accent-glow">
             <Flame className="h-5 w-5" strokeWidth={2.5} />
           </span>
           <span className="font-display text-lg font-bold tracking-tight">
             FireDoor <span className="text-accent">Network</span>
           </span>
-        </a>
+        </Link>
         <div className="hidden items-center gap-8 md:flex">
           {nav.map((item) => (
             <a
@@ -42,12 +43,12 @@ export function Header() {
           >
             Sign in
           </a>
-          <a
-            href="#"
+          <Link
+            href="/apply"
             className="rounded-lg bg-accent-gradient px-4 py-2 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
           >
             Become an Affiliate
-          </a>
+          </Link>
         </div>
         <button
           type="button"
@@ -72,13 +73,13 @@ export function Header() {
                 {item.label}
               </a>
             ))}
-            <a
-              href="#"
+            <Link
+              href="/apply"
               className="w-full rounded-lg bg-accent-gradient py-3 text-center text-sm font-semibold text-accent-foreground shadow-accent-glow"
               onClick={() => setOpen(false)}
             >
               Become an Affiliate
-            </a>
+            </Link>
           </div>
         </div>
       ) : null}
