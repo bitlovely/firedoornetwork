@@ -1,26 +1,117 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 8%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 8%;
+  --primary: 222 60% 11%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 18 95% 55%;
+  --accent-foreground: 0 0% 100%;
+  --accent-glow: 22 100% 62%;
+  --secondary: 220 20% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 220 20% 96%;
+  --muted-foreground: 220 12% 42%;
+  --border: 220 18% 90%;
+  --input: 220 18% 90%;
+  --ring: 18 95% 55%;
+  --radius: 0.75rem;
+  --gradient-hero: linear-gradient(
+    135deg,
+    hsl(222 60% 8%) 0%,
+    hsl(222 55% 14%) 60%,
+    hsl(222 50% 18%) 100%
+  );
+  --gradient-accent: linear-gradient(
+    135deg,
+    hsl(18 95% 55%) 0%,
+    hsl(22 100% 62%) 100%
+  );
+  --gradient-glow: radial-gradient(
+    circle at 50% 0%,
+    hsl(18 95% 55% / 0.18),
+    transparent 60%
+  );
+  --shadow-accent: 0 12px 32px -8px hsl(18 95% 55% / 0.45);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif,
+    system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility bg-hero-gradient {
+  background: var(--gradient-hero);
+}
+
+@utility bg-accent-gradient {
+  background: var(--gradient-accent);
+}
+
+@utility bg-glow {
+  background: var(--gradient-glow);
+}
+
+@utility shadow-accent-glow {
+  box-shadow: var(--shadow-accent);
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@utility text-balance {
+  text-wrap: balance;
 }
