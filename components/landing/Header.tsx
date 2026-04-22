@@ -17,7 +17,7 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="container mx-auto px-4 pt-4 sm:px-6">
-        <div className="rounded-2xl border border-white/10 bg-primary/55 shadow-lg shadow-black/10 backdrop-blur-md">
+        <div className="rounded-2xl bg-primary/35 backdrop-blur-md shadow-[0_18px_45px_-18px_rgba(0,0,0,0.45)] ring-1 ring-white/10">
           <nav className="flex h-14 items-center justify-between px-3 sm:px-4">
             <Link
               href="/"
@@ -60,7 +60,7 @@ export function Header() {
 
             <button
               type="button"
-              className="rounded-lg p-2 text-primary-foreground transition-colors hover:bg-white/10 md:hidden"
+              className="rounded-xl p-2 text-primary-foreground transition-colors hover:bg-white/10 md:hidden"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
@@ -70,7 +70,7 @@ export function Header() {
           </nav>
 
           {open ? (
-            <div className="border-t border-white/10 bg-primary/60 backdrop-blur-md md:hidden">
+            <div className="border-t border-white/10 bg-primary/30 backdrop-blur-md md:hidden">
               <div className="flex flex-col gap-4 px-4 py-4">
                 {nav.map((item) => (
                   <a

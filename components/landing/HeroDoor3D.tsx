@@ -17,44 +17,54 @@ function DoorModel({ rotate }: { rotate: boolean }) {
   });
 
   return (
-    <group ref={groupRef} rotation={[0, -0.55, 0]}>
+    <group ref={groupRef} rotation={[0, -0.45, 0]}>
       <group>
-        {/* Door slab */}
-        <mesh position={[0, 0.1, 0]} castShadow receiveShadow>
-          <boxGeometry args={[1.05, 2.05, 0.12]} />
-          <meshStandardMaterial color="#e5e7eb" roughness={0.62} metalness={0.05} />
+        {/* Double fire doors (reference-inspired) */}
+        <mesh position={[-0.28, 0.1, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.55, 2.05, 0.1]} />
+          <meshStandardMaterial color="#e5e7eb" roughness={0.7} metalness={0.02} />
+        </mesh>
+        <mesh position={[0.28, 0.1, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.55, 2.05, 0.1]} />
+          <meshStandardMaterial color="#e5e7eb" roughness={0.7} metalness={0.02} />
         </mesh>
 
-        {/* Accent strip */}
-        <mesh position={[0.44, 0.1, 0.07]} castShadow>
-          <boxGeometry args={[0.06, 2.02, 0.03]} />
+        {/* Center seam */}
+        <mesh position={[0, 0.1, 0.053]} castShadow>
+          <boxGeometry args={[0.02, 2.02, 0.01]} />
+          <meshStandardMaterial color="#9ca3af" roughness={0.85} metalness={0.02} />
+        </mesh>
+
+        {/* Window panels */}
+        <mesh position={[-0.28, 0.55, 0.055]} castShadow>
+          <boxGeometry args={[0.22, 0.55, 0.02]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.25} metalness={0.05} />
+        </mesh>
+        <mesh position={[0.28, 0.55, 0.055]} castShadow>
+          <boxGeometry args={[0.22, 0.55, 0.02]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.25} metalness={0.05} />
+        </mesh>
+
+        {/* Push bar */}
+        <mesh position={[0, -0.15, 0.07]} castShadow>
+          <boxGeometry args={[0.92, 0.05, 0.04]} />
+          <meshStandardMaterial color="#d6d3d1" roughness={0.22} metalness={0.9} />
+        </mesh>
+        <mesh position={[0, -0.15, 0.09]} castShadow>
+          <boxGeometry args={[0.22, 0.08, 0.02]} />
+          <meshStandardMaterial color="#d6d3d1" roughness={0.25} metalness={0.92} />
+        </mesh>
+
+        {/* Subtle orange accent (keeps system color) */}
+        <mesh position={[0.52, 0.1, 0.06]} castShadow>
+          <boxGeometry args={[0.04, 2.02, 0.02]} />
           <meshStandardMaterial
             color="#ff6a1a"
             emissive="#ff6a1a"
-            emissiveIntensity={0.35}
+            emissiveIntensity={0.18}
             roughness={0.35}
-            metalness={0.2}
+            metalness={0.15}
           />
-        </mesh>
-
-        {/* Handle */}
-        <mesh position={[0.34, 0.12, 0.085]} castShadow>
-          <cylinderGeometry args={[0.018, 0.018, 0.18, 18]} />
-          <meshStandardMaterial color="#d6d3d1" roughness={0.25} metalness={0.9} />
-        </mesh>
-        <mesh position={[0.34, 0.12, 0.125]} castShadow>
-          <boxGeometry args={[0.22, 0.03, 0.04]} />
-          <meshStandardMaterial color="#d6d3d1" roughness={0.22} metalness={0.92} />
-        </mesh>
-
-        {/* Certification label */}
-        <mesh position={[-0.32, -0.55, 0.081]} castShadow>
-          <boxGeometry args={[0.34, 0.22, 0.01]} />
-          <meshStandardMaterial color="#f8fafc" roughness={0.9} metalness={0} />
-        </mesh>
-        <mesh position={[-0.32, -0.55, 0.086]}>
-          <boxGeometry args={[0.3, 0.03, 0.005]} />
-          <meshStandardMaterial color="#ff6a1a" roughness={0.7} />
         </mesh>
       </group>
     </group>
@@ -92,7 +102,7 @@ export function HeroDoor3D() {
   }, []);
 
   const wrapperClass =
-    "relative w-full overflow-hidden aspect-[4/3] sm:aspect-video";
+    "relative w-full overflow-hidden aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4]";
 
   if (webglOk !== true) {
     return (
@@ -116,7 +126,7 @@ export function HeroDoor3D() {
         shadows
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: "default" }}
-        camera={{ position: [0, 0.12, 3.15], fov: 32, near: 0.1, far: 50 }}
+        camera={{ position: [0, 0.18, 3.6], fov: 30, near: 0.1, far: 50 }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
         }}
@@ -134,7 +144,7 @@ export function HeroDoor3D() {
         />
         <directionalLight position={[-2.5, 1.5, 3]} intensity={0.6} />
 
-        <group position={[0, -0.12, 0]} scale={1.25}>
+        <group position={[0, -0.18, 0]} scale={1.1}>
           <DoorModel rotate={!reduceMotion} />
         </group>
       </Canvas>

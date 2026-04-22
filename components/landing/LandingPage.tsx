@@ -119,9 +119,10 @@ export function LandingPage() {
 
       <section className="relative overflow-hidden bg-hero-gradient pt-28 sm:pt-32">
         <div className="pointer-events-none absolute inset-0 bg-glow" />
+        <div className="pointer-events-none absolute inset-0 opacity-35 pixel-grid" />
         <div className="container relative mx-auto grid items-center gap-12 px-4 pt-16 pb-24 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-32">
           <div className="animate-fade-up lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-semibold tracking-wider text-accent uppercase">
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold tracking-wider text-accent uppercase font-pixel">
               <Sparkles className="h-3.5 w-3.5" />
               The UK network for fire door professionals
             </div>
@@ -140,14 +141,14 @@ export function LandingPage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/apply"
-                className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
+                className="group inline-flex h-14 items-center justify-center gap-2 bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95 pixel-border"
               >
                 Become an Affiliate
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <a
                 href="#directory"
-                className="inline-flex h-14 items-center justify-center rounded-lg border border-white/15 px-8 text-base font-semibold text-primary-foreground transition-colors hover:bg-white/10"
+                className="inline-flex h-14 items-center justify-center border border-white/15 px-8 text-base font-semibold text-primary-foreground transition-colors hover:bg-white/10 pixel-border"
               >
                 Browse the directory
               </a>
@@ -171,7 +172,7 @@ export function LandingPage() {
           <div className="animate-fade-up [animation-delay:150ms] lg:col-span-5">
             <div className="relative">
               <div className="absolute -inset-4 rounded-full bg-accent/20 blur-3xl" />
-              <div className="relative overflow-hidden rounded-2xl">
+              <div className="relative overflow-hidden">
                 <HeroDoor3D />
               </div>
             </div>
@@ -196,7 +197,7 @@ export function LandingPage() {
               return (
                 <div
                   key={item.step}
-                  className="group relative rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+                  className="group relative rounded-2xl bg-neu p-8 shadow-[10px_10px_22px_hsl(var(--neu-shadow-dark)),_-10px_-10px_22px_hsl(var(--neu-shadow-light))] transition-all duration-300 hover:-translate-y-1 hover:shadow-[14px_14px_34px_hsl(var(--neu-shadow-dark)),_-14px_-14px_34px_hsl(var(--neu-shadow-light))]"
                   style={{ animationDelay: `${t * 100}ms` }}
                 >
                   <div className="absolute top-6 right-6 font-display text-5xl font-extrabold text-secondary transition-colors group-hover:text-accent/20">
@@ -241,9 +242,9 @@ export function LandingPage() {
               return (
                 <div
                   key={item.title}
-                  className="rounded-xl border border-border/60 bg-background p-6 transition-all hover:border-accent/30 hover:shadow-md"
+                  className="rounded-2xl bg-neu p-6 shadow-[10px_10px_22px_hsl(var(--neu-shadow-dark)),_-10px_-10px_22px_hsl(var(--neu-shadow-light))] transition-all hover:shadow-[14px_14px_34px_hsl(var(--neu-shadow-dark)),_-14px_-14px_34px_hsl(var(--neu-shadow-light))]"
                 >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-accent shadow-[6px_6px_14px_hsl(var(--neu-shadow-dark)),_-6px_-6px_14px_hsl(var(--neu-shadow-light))]">
                     <Icon className="h-5 w-5" strokeWidth={2.25} />
                   </div>
                   <h3 className="mt-4 font-display text-lg font-bold text-primary">

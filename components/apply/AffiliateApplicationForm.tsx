@@ -40,7 +40,7 @@ export function AffiliateApplicationForm() {
   }
 
   const field =
-    "mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2 text-foreground shadow-sm outline-none transition-[box-shadow,border-color] focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30";
+    "mt-1.5 w-full rounded-xl bg-neu px-3 py-2 text-foreground shadow-[inset_8px_8px_18px_hsl(var(--neu-shadow-dark)),_inset_-8px_-8px_18px_hsl(var(--neu-shadow-light))] outline-none transition-[box-shadow] focus-visible:neu-ring";
 
   return (
     <form onSubmit={onSubmit} className="space-y-8">

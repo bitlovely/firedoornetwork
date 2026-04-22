@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ApplyPage() {
   return (
     <main className="container mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:py-16">
-      <p className="text-xs font-semibold tracking-wider text-accent uppercase">
+      <p className="text-[11px] font-semibold text-accent uppercase font-pixel">
         Affiliate application
       </p>
       <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-primary sm:text-4xl">
@@ -21,7 +21,7 @@ export default function ApplyPage() {
         team, then approved profiles go live for property managers and contractors to find
         you.
       </p>
-      <div className="mt-10 rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+      <div className="mt-10 rounded-3xl bg-neu p-6 shadow-[18px_18px_40px_hsl(var(--neu-shadow-dark)),_-18px_-18px_40px_hsl(var(--neu-shadow-light))] sm:p-8">
         <AffiliateApplicationForm />
       </div>
     </main>
