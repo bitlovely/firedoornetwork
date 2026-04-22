@@ -18,7 +18,7 @@ function DoorModel({ rotate }: { rotate: boolean }) {
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} rotation={[0, -0.55, 0]}>
       <group>
         {/* Door slab */}
         <mesh position={[0, 0.1, 0]} castShadow receiveShadow>
@@ -98,32 +98,40 @@ export function HeroDoor3D() {
     }
   }, []);
 
+  const wrapperClass =
+    "relative w-full overflow-hidden bg-hero-gradient aspect-[4/3] sm:aspect-video";
+
   if (webglOk !== true) {
     return (
-      <Image
-        src="/hero-firedoor.jpg"
-        alt="Modern fire-rated door with certification label in a commercial corridor"
-        width={1600}
-        height={900}
-        className="h-auto w-full object-cover"
-        priority
-      />
+      <div className={wrapperClass}>
+        <Image
+          src="/hero-firedoor.jpg"
+          alt="Modern fire-rated door with certification label in a commercial corridor"
+          fill
+          sizes="(max-width: 1024px) 100vw, 520px"
+          className="object-cover"
+          priority
+        />
+      </div>
     );
   }
 
   return (
-    <div className="aspect-video w-full bg-hero-gradient">
+    <div className={wrapperClass}>
       <Canvas
+        className="absolute inset-0"
         shadows
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: "default" }}
-        camera={{ position: [0, 0.15, 2.35], fov: 36, near: 0.1, far: 50 }}
+        camera={{ position: [0, 0.1, 2.65], fov: 34, near: 0.1, far: 50 }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
         }}
         onError={() => setWebglOk(false)}
       >
         <ambientLight intensity={0.6} />
+        {/* Rim light to separate the grey door from the dark hero gradient */}
+        <directionalLight position={[-4, 2.5, -2]} intensity={0.55} />
         <directionalLight
           position={[3.5, 4.5, 2.5]}
           intensity={1.2}
@@ -133,7 +141,7 @@ export function HeroDoor3D() {
         />
         <directionalLight position={[-2.5, 1.5, 3]} intensity={0.6} />
 
-        <group position={[0, -0.15, 0]} scale={1.25}>
+        <group position={[0, -0.05, 0]} scale={1.55}>
           <DoorModel rotate={!reduceMotion} />
           <ContactShadows
             position={[0, -1.05, 0]}
