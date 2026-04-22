@@ -117,24 +117,23 @@ export function LandingPage() {
     <main className="min-h-screen bg-background">
       <Header />
 
-      <section className="relative overflow-hidden bg-hero-gradient pt-28 sm:pt-32">
+      <section className="relative overflow-hidden bg-black pt-28 sm:pt-32">
         <HeroNetworkBackground />
-        <div className="pointer-events-none absolute inset-0 bg-glow" />
-        <div className="pointer-events-none absolute inset-0 opacity-35 pixel-grid" />
+        <div className="pointer-events-none absolute inset-0 bg-glow opacity-40" />
         <div className="container relative mx-auto flex items-center justify-center px-4 pt-16 pb-24 sm:px-6 lg:pt-24 lg:pb-32">
           <div className="animate-fade-up w-full max-w-3xl text-center">
-            <div className="inline-flex items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold tracking-wider text-accent uppercase font-pixel">
+            <div className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold tracking-wider text-white/80 uppercase">
               <Sparkles className="h-3.5 w-3.5" />
               The UK network for fire door professionals
             </div>
-            <h1 className="mt-6 font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance text-primary-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
+            <h1 className="mt-6 font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance text-white sm:text-5xl lg:text-6xl xl:text-7xl">
               A network that{" "}
               <span className="relative inline-block">
-                <span className="relative z-10 text-accent">leads to work.</span>
-                <span className="absolute right-0 -bottom-1 left-0 h-1 rounded-full bg-accent/60" />
+                <span className="relative z-10 text-white">leads to work.</span>
+                <span className="absolute right-0 -bottom-1 left-0 h-1 rounded-full bg-white/35" />
               </span>
             </h1>
-            <p className="mt-6 mx-auto max-w-2xl text-lg text-balance text-primary-foreground/70 sm:text-xl">
+            <p className="mt-6 mx-auto max-w-2xl text-lg text-balance text-white/70 sm:text-xl">
               FireDoor Network connects verified fire door surveyors and inspectors
               with property managers, contractors and clients who need them. No
               noticeboards. No politics. Just real jobs in your area.
@@ -142,29 +141,29 @@ export function LandingPage() {
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/apply"
-                className="group inline-flex h-14 items-center justify-center gap-2 bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95 pixel-border"
+                className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-white px-8 text-base font-semibold text-black shadow-[0_14px_40px_-18px_rgba(255,255,255,0.55)] transition-colors hover:bg-white/90"
               >
                 Become an Affiliate
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <a
                 href="#directory"
-                className="inline-flex h-14 items-center justify-center border border-white/15 px-8 text-base font-semibold text-primary-foreground transition-colors hover:bg-white/10 pixel-border"
+                className="inline-flex h-14 items-center justify-center rounded-lg border border-white/20 bg-transparent px-8 text-base font-semibold text-white transition-colors hover:bg-white/10"
               >
                 Browse the directory
               </a>
             </div>
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-primary-foreground/60">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-white/60">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-accent" />
+                <ShieldCheck className="h-4 w-4 text-white/70" />
                 Vetted credentials
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-accent" />
+                <ShieldCheck className="h-4 w-4 text-white/70" />
                 Insurance verified
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-accent" />
+                <ShieldCheck className="h-4 w-4 text-white/70" />
                 UK-wide coverage
               </div>
             </div>

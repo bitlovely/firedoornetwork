@@ -6,7 +6,7 @@
   --card: 0 0% 100%;
   --card-foreground: 222 47% 8%;
   /* Closer to screenshot: deeper navy */
-  --primary: 224 65% 10%;
+  --primary: 220 25% 4%;
   --primary-foreground: 0 0% 100%;
   --accent: 18 95% 55%;
   --accent-foreground: 0 0% 100%;
@@ -14,7 +14,7 @@
   --secondary: 220 20% 96%;
   --secondary-foreground: 222 47% 11%;
   --muted: 220 20% 96%;
-  --muted-foreground: 220 12% 42%;
+  --muted-foreground: 220 10% 34%;
   --border: 220 18% 90%;
   --input: 220 18% 90%;
   --ring: 18 95% 55%;
@@ -23,9 +23,9 @@
   --radius: 0.75rem;
   --gradient-hero: linear-gradient(
     135deg,
-    hsl(224 66% 10%) 0%,
-    hsl(226 58% 18%) 48%,
-    hsl(230 52% 22%) 100%
+    hsl(220 25% 4%) 0%,
+    hsl(224 40% 9%) 52%,
+    hsl(226 48% 13%) 100%
   );
   --gradient-accent: linear-gradient(
     135deg,

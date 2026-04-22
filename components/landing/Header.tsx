@@ -17,7 +17,7 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="container mx-auto px-4 pt-4 sm:px-6">
-        <div className="menu-water relative overflow-hidden rounded-2xl bg-primary/35 backdrop-blur-md shadow-[0_18px_45px_-18px_rgba(0,0,0,0.45)] ring-1 ring-white/10">
+        <div className="menu-water relative overflow-hidden rounded-2xl bg-primary/55 backdrop-blur-md shadow-[0_18px_45px_-18px_rgba(0,0,0,0.45)] ring-1 ring-white/12">
           <nav className="flex h-14 items-center justify-between px-3 sm:px-4">
             <Link
               href="/"
@@ -36,7 +36,7 @@ export function Header() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-sm font-medium text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+                  className="text-sm font-semibold text-primary-foreground/85 underline-offset-8 transition-colors hover:text-primary-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                 >
                   {item.label}
                 </a>
@@ -70,13 +70,13 @@ export function Header() {
           </nav>
 
           {open ? (
-            <div className="border-t border-white/10 bg-primary/30 backdrop-blur-md md:hidden">
+            <div className="border-t border-white/12 bg-primary/55 backdrop-blur-md md:hidden">
               <div className="flex flex-col gap-4 px-4 py-4">
                 {nav.map((item) => (
                   <a
                     key={item.href}
                     href={item.href}
-                    className="text-sm font-medium text-primary-foreground/80"
+                    className="text-sm font-semibold text-primary-foreground/90"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}

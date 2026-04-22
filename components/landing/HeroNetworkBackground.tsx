@@ -1,19 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
-import { useEffect, useId, useMemo, useState } from "react";
-
-type Node = { x: number; y: number; r: number; phase: number };
-type Link = { a: number; b: number; opacity: number };
-
-function mulberry32(seed: number) {
-  return function rand() {
-    let t = (seed += 0x6d2b79f5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+import { useEffect, useId, useState } from "react";
 
 export function HeroNetworkBackground() {
   const uid = useId().replace(/:/g, "");
@@ -27,42 +14,7 @@ export function HeroNetworkBackground() {
     return () => mql?.removeEventListener?.("change", onChange);
   }, []);
 
-  const { nodes, links } = useMemo(() => {
-    const rand = mulberry32(1337);
-    // Spread activity across the entire hero.
-    const n = 24;
-    const nodes: Node[] = Array.from({ length: n }, () => ({
-      x: 6 + rand() * 88,
-      y: 10 + rand() * 80,
-      r: 1.1 + rand() * 1.7,
-      phase: rand(),
-    }));
-
-    const links: Link[] = [];
-    for (let i = 0; i < nodes.length; i += 1) {
-      // connect each node to 2-3 nearest neighbors (in normalized 0..100 space)
-      const distances = nodes
-        .map((p, j) => {
-          const dx = p.x - nodes[i].x;
-          const dy = p.y - nodes[i].y;
-          return { j, d: dx * dx + dy * dy };
-        })
-        .filter(({ j }) => j !== i)
-        .sort((a, b) => a.d - b.d)
-        .slice(0, 2 + Math.floor(rand() * 2));
-
-      for (const { j } of distances) {
-        const a = Math.min(i, j);
-        const b = Math.max(i, j);
-        if (links.some((l) => l.a === a && l.b === b)) continue;
-        links.push({ a, b, opacity: 0.12 + rand() * 0.18 });
-      }
-    }
-
-    return { nodes, links };
-  }, []);
-
-  const dur = reduceMotion ? "0s" : "5.8s";
+  const particleDur = reduceMotion ? "0s" : "3.8s";
 
   return (
     <div
@@ -75,10 +27,10 @@ export function HeroNetworkBackground() {
         preserveAspectRatio="none"
       >
         <defs>
-          <linearGradient id={`grad-${uid}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="rgb(255 106 26)" stopOpacity="0.5" />
-            <stop offset="55%" stopColor="rgb(255 255 255)" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="rgb(255 106 26)" stopOpacity="0.34" />
+          <linearGradient id={`grad-${uid}`} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.12" />
+            <stop offset="35%" stopColor="rgb(255 106 26)" stopOpacity="0.26" />
+            <stop offset="100%" stopColor="rgb(255 255 255)" stopOpacity="0.12" />
           </linearGradient>
           <filter id={`glow-${uid}`} x="-40%" y="-40%" width="180%" height="180%">
             <feGaussianBlur stdDeviation="0.35" result="blur" />
@@ -97,9 +49,18 @@ export function HeroNetworkBackground() {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+
+          {/* Directed paths: pros -> network -> work */}
+          <path id={`p1-${uid}`} d="M 12 62 C 22 54, 28 50, 36 46" />
+          <path id={`p2-${uid}`} d="M 12 62 C 22 70, 30 74, 38 78" />
+          <path id={`p3-${uid}`} d="M 36 46 C 46 42, 56 44, 64 48" />
+          <path id={`p4-${uid}`} d="M 38 78 C 48 70, 56 64, 64 58" />
+          <path id={`p5-${uid}`} d="M 64 48 C 74 46, 84 42, 92 36" />
+          <path id={`p6-${uid}`} d="M 64 58 C 74 60, 84 62, 92 64" />
+
           <path
-            id={`curve-${uid}`}
-            d="M -10 78 C 12 68, 34 70, 54 60 C 72 50, 88 44, 110 34"
+            id={`headline-${uid}`}
+            d="M 10 22 C 28 14, 50 12, 90 16"
           />
         </defs>
 
@@ -110,168 +71,116 @@ export function HeroNetworkBackground() {
           width="100"
           height="100"
           fill={`url(#grad-${uid})`}
-          opacity="0.06"
+          opacity="0.045"
         />
 
-        {/* network (lines + spots drift together) */}
-        <g className={reduceMotion ? "" : "network-group"}>
-          <g stroke={`url(#grad-${uid})`} strokeWidth="0.35">
-            {links.map((l, idx) => {
-              const a = nodes[l.a];
-              const b = nodes[l.b];
-              return (
-                <line
-                  key={`${l.a}-${l.b}-${idx}`}
-                  x1={a.x}
-                  y1={a.y}
-                  x2={b.x}
-                  y2={b.y}
-                  opacity={l.opacity}
-                  className={reduceMotion ? "" : "network-line"}
-                  style={
-                    reduceMotion
-                      ? undefined
-                      : ({
-                          animationDelay: `${(idx % 9) * 0.22}s`,
-                        } as CSSProperties)
-                  }
-                />
-              );
-            })}
-          </g>
-
-          <g filter={`url(#glow-${uid})`}>
-            {nodes.map((n, idx) => (
-              <circle
-                key={idx}
-                cx={n.x}
-                cy={n.y}
-                r={n.r}
-                fill="rgb(255 106 26)"
-                opacity={0.14}
-                className={reduceMotion ? "" : "network-node"}
-                style={
-                  reduceMotion
-                    ? undefined
-                    : ({
-                        animationDelay: `${n.phase * 2.2}s`,
-                      } as CSSProperties)
-                }
-              />
-            ))}
-          </g>
+        {/* network lines */}
+        <g
+          stroke={`url(#grad-${uid})`}
+          strokeWidth="0.55"
+          fill="none"
+          opacity="0.55"
+        >
+          <use href={`#p1-${uid}`} />
+          <use href={`#p2-${uid}`} />
+          <use href={`#p3-${uid}`} />
+          <use href={`#p4-${uid}`} />
+          <use href={`#p5-${uid}`} />
+          <use href={`#p6-${uid}`} />
         </g>
 
-        {/* message */}
-        <g opacity="0.16">
+        {/* nodes (3 clusters: pros / network / work) */}
+        <g filter={`url(#glow-${uid})`}>
+          {/* pros cluster */}
+          <circle cx="12" cy="62" r="2.1" fill="rgb(255 106 26)" opacity="0.16" />
+          <circle cx="15" cy="58" r="1.2" fill="rgb(255 255 255)" opacity="0.12" />
+          <circle cx="16" cy="66" r="1.1" fill="rgb(255 255 255)" opacity="0.10" />
+
+          {/* network hub */}
+          <circle cx="36" cy="46" r="1.6" fill="rgb(255 255 255)" opacity="0.12" />
+          <circle cx="38" cy="78" r="1.6" fill="rgb(255 255 255)" opacity="0.12" />
+          <circle cx="64" cy="52" r="2.4" fill="rgb(255 106 26)" opacity="0.14" />
+          <circle cx="60" cy="47" r="1.1" fill="rgb(255 255 255)" opacity="0.10" />
+          <circle cx="61" cy="59" r="1.1" fill="rgb(255 255 255)" opacity="0.10" />
+
+          {/* work / clients cluster */}
+          <circle cx="92" cy="36" r="2.2" fill="rgb(255 255 255)" opacity="0.14" />
+          <circle cx="92" cy="64" r="2.2" fill="rgb(255 255 255)" opacity="0.14" />
+          <circle cx="88" cy="50" r="1.1" fill="rgb(255 106 26)" opacity="0.12" />
+        </g>
+
+        {/* moving "leads" particles */}
+        {!reduceMotion ? (
+          <g opacity="0.7">
+            {[
+              { path: `#p1-${uid}`, delay: "0s" },
+              { path: `#p2-${uid}`, delay: "0.8s" },
+              { path: `#p3-${uid}`, delay: "0.3s" },
+              { path: `#p4-${uid}`, delay: "1.1s" },
+              { path: `#p5-${uid}`, delay: "0.6s" },
+              { path: `#p6-${uid}`, delay: "1.4s" },
+            ].map((p, i) => (
+              <circle key={i} r="0.7" fill="rgb(255 106 26)" opacity="0.45">
+                <animateMotion
+                  dur={particleDur}
+                  repeatCount="indefinite"
+                  begin={p.delay}
+                  keyTimes="0;1"
+                  keySplines="0.4 0 0.2 1"
+                  calcMode="spline"
+                  path={undefined}
+                >
+                  <mpath href={p.path} />
+                </animateMotion>
+                <animate
+                  attributeName="opacity"
+                  values="0.15;0.55;0.15"
+                  dur="1.9s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+            ))}
+          </g>
+        ) : null}
+
+        {/* message: reinforces meaning without being loud */}
+        <g opacity="0.14">
           <text
             fill="white"
-            fontSize="3.2"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace"
-            letterSpacing="0.6"
+            fontSize="3.1"
+            fontFamily="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+            letterSpacing="0.35"
           >
-            <textPath href={`#curve-${uid}`} startOffset="0%">
-              This website is a network • This website is a network • This website
-              is a network •
+            <textPath href={`#headline-${uid}`} startOffset="0%">
+              Fire door pros → network → work • Fire door pros → network → work •
             </textPath>
-            {!reduceMotion ? (
-              <animate
-                attributeName="opacity"
-                values="0.08;0.16;0.08"
-                dur={dur}
-                repeatCount="indefinite"
-              />
-            ) : null}
           </text>
         </g>
       </svg>
 
-      {/* subtle parallax drift so it reads as “alive” */}
+      {/* subtle background glow drift */}
       <div className={reduceMotion ? "" : "network-drift absolute inset-0"} />
 
       <style jsx>{`
         :global(.network-drift) {
           background: radial-gradient(
-              740px 340px at 18% 26%,
-              rgba(255, 106, 26, 0.08),
-              transparent 55%
-            ),
-            radial-gradient(
-              560px 280px at 78% 22%,
-              rgba(255, 255, 255, 0.06),
-              transparent 60%
-            ),
-            radial-gradient(
-              820px 420px at 55% 58%,
-              rgba(255, 106, 26, 0.055),
+              720px 360px at 22% 52%,
+              rgba(255, 106, 26, 0.06),
               transparent 58%
             ),
             radial-gradient(
-              560px 320px at 26% 78%,
-              rgba(255, 255, 255, 0.045),
-              transparent 60%
+              760px 420px at 70% 42%,
+              rgba(255, 255, 255, 0.05),
+              transparent 62%
             ),
             radial-gradient(
-              900px 420px at 84% 78%,
-              rgba(255, 106, 26, 0.045),
-              transparent 62%
+              720px 460px at 86% 68%,
+              rgba(255, 106, 26, 0.04),
+              transparent 64%
             );
           mix-blend-mode: screen;
-          animation: network-drift 11s ease-in-out infinite;
-          opacity: 0.55;
-        }
-
-        :global(.network-node) {
-          transform-origin: center;
-          animation: node-soft 6.2s ease-in-out infinite;
-        }
-
-        :global(.network-line) {
-          animation: line-fade 6.2s ease-in-out infinite;
-        }
-
-        :global(.network-group) {
-          transform-origin: center;
-          animation: network-sway 10.5s ease-in-out infinite;
-        }
-
-        @keyframes node-soft {
-          0% {
-            opacity: 0.1;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.16;
-            transform: scale(1.08);
-          }
-          100% {
-            opacity: 0.1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes line-fade {
-          0% {
-            opacity: 0.06;
-          }
-          50% {
-            opacity: 0.14;
-          }
-          100% {
-            opacity: 0.06;
-          }
-        }
-
-        @keyframes network-sway {
-          0% {
-            transform: translate3d(0, 0, 0);
-          }
-          50% {
-            transform: translate3d(-0.8%, 0.5%, 0);
-          }
-          100% {
-            transform: translate3d(0, 0, 0);
-          }
+          animation: network-drift 12s ease-in-out infinite;
+          opacity: 0.6;
         }
 
         @keyframes network-drift {
@@ -279,7 +188,7 @@ export function HeroNetworkBackground() {
             transform: translate3d(0, 0, 0);
           }
           50% {
-            transform: translate3d(-2%, 1.5%, 0);
+            transform: translate3d(-1.2%, 0.9%, 0);
           }
           100% {
             transform: translate3d(0, 0, 0);
