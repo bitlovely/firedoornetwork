@@ -117,7 +117,7 @@ export function LandingPage() {
     <main className="min-h-screen bg-background">
       <Header />
 
-      <section className="relative overflow-hidden bg-hero-gradient pt-24">
+      <section className="relative overflow-hidden bg-hero-gradient pt-28 sm:pt-32">
         <div className="pointer-events-none absolute inset-0 bg-glow" />
         <div className="container relative mx-auto grid items-center gap-12 px-4 pt-16 pb-24 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-32">
           <div className="animate-fade-up lg:col-span-7">
