@@ -333,7 +333,7 @@ export function LandingPage() {
               <h2 className="mt-4 font-display text-3xl leading-tight font-extrabold tracking-tight text-balance sm:text-4xl lg:text-5xl">
                 The badge that means something.
               </h2>
-              <p className="mt-4 text-lg text-white/75">
+              <p className="mt-4 text-lg text-white">
                 Becoming a Verified Affiliate isn&apos;t automatic. We check, we
                 approve, we vouch. That&apos;s why clients pick names from our
                 directory.
@@ -341,7 +341,7 @@ export function LandingPage() {
               <div className="mt-8 inline-flex items-center gap-3 rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur-md">
                 <ShieldCheck className="h-6 w-6 text-white" strokeWidth={2.5} />
                 <div>
-                  <div className="text-xs font-semibold tracking-wider text-white/70 uppercase">
+                  <div className="text-xs font-semibold tracking-wider text-white uppercase">
                     FireDoor Network
                   </div>
                   <div className="font-display text-lg font-bold text-white">
@@ -365,7 +365,7 @@ export function LandingPage() {
                       <h3 className="font-display text-lg font-bold">
                         {item.title}
                       </h3>
-                      <p className="mt-1 text-sm leading-relaxed text-white/75">
+                      <p className="mt-1 text-sm leading-relaxed text-white">
                         {item.description}
                       </p>
                     </div>
