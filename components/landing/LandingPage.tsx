@@ -173,29 +173,6 @@ export function LandingPage() {
               <div className="absolute -inset-4 rounded-full bg-accent/20 blur-3xl" />
               <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-lg">
                 <HeroDoor3D />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-primary via-primary/60 to-transparent p-6">
-                  <div className="flex items-center gap-3 rounded-xl bg-primary-foreground/95 p-3 backdrop-blur">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-                      <ShieldCheck className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                        Verified Affiliate
-                      </div>
-                      <div className="text-sm font-semibold text-primary">
-                        FD30 / FD60 certified inspector
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="animate-fade-up absolute top-8 -left-4 rounded-xl border border-border bg-primary-foreground p-4 shadow-lg [animation-delay:400ms] sm:-left-8">
-                <div className="font-display text-2xl font-extrabold text-primary">
-                  1,200+
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Inspections last month
-                </div>
               </div>
             </div>
           </div>
