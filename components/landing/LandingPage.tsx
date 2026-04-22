@@ -18,7 +18,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Header } from "./Header";
-import { HeroDoor3D } from "./HeroDoor3D";
+import { HeroNetworkBackground } from "./HeroNetworkBackground";
 
 const howSteps = [
   {
@@ -118,11 +118,12 @@ export function LandingPage() {
       <Header />
 
       <section className="relative overflow-hidden bg-hero-gradient pt-28 sm:pt-32">
+        <HeroNetworkBackground />
         <div className="pointer-events-none absolute inset-0 bg-glow" />
         <div className="pointer-events-none absolute inset-0 opacity-35 pixel-grid" />
-        <div className="container relative mx-auto grid items-center gap-12 px-4 pt-16 pb-24 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-32">
-          <div className="animate-fade-up lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold tracking-wider text-accent uppercase font-pixel">
+        <div className="container relative mx-auto flex items-center justify-center px-4 pt-16 pb-24 sm:px-6 lg:pt-24 lg:pb-32">
+          <div className="animate-fade-up w-full max-w-3xl text-center">
+            <div className="inline-flex items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold tracking-wider text-accent uppercase font-pixel">
               <Sparkles className="h-3.5 w-3.5" />
               The UK network for fire door professionals
             </div>
@@ -133,12 +134,12 @@ export function LandingPage() {
                 <span className="absolute right-0 -bottom-1 left-0 h-1 rounded-full bg-accent/60" />
               </span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg text-balance text-primary-foreground/70 sm:text-xl">
+            <p className="mt-6 mx-auto max-w-2xl text-lg text-balance text-primary-foreground/70 sm:text-xl">
               FireDoor Network connects verified fire door surveyors and inspectors
               with property managers, contractors and clients who need them. No
               noticeboards. No politics. Just real jobs in your area.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/apply"
                 className="group inline-flex h-14 items-center justify-center gap-2 bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95 pixel-border"
@@ -153,7 +154,7 @@ export function LandingPage() {
                 Browse the directory
               </a>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-primary-foreground/60">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-primary-foreground/60">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-accent" />
                 Vetted credentials
@@ -165,17 +166,6 @@ export function LandingPage() {
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-accent" />
                 UK-wide coverage
-              </div>
-            </div>
-          </div>
-
-          <div className="animate-fade-up [animation-delay:150ms] lg:col-span-5">
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-full bg-accent/20 blur-3xl" />
-              <div className="relative overflow-hidden">
-                <div className="mx-auto w-full max-w-sm sm:max-w-md lg:max-w-sm">
-                  <HeroDoor3D />
-                </div>
               </div>
             </div>
           </div>
