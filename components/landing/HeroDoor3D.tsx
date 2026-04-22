@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
 import type * as THREE from "three";
 
 function DoorModel({ rotate }: { rotate: boolean }) {
@@ -24,12 +23,6 @@ function DoorModel({ rotate }: { rotate: boolean }) {
         <mesh position={[0, 0.1, 0]} castShadow receiveShadow>
           <boxGeometry args={[1.05, 2.05, 0.12]} />
           <meshStandardMaterial color="#e5e7eb" roughness={0.62} metalness={0.05} />
-        </mesh>
-
-        {/* Frame */}
-        <mesh position={[0, 0.1, -0.09]} castShadow receiveShadow>
-          <boxGeometry args={[1.16, 2.16, 0.05]} />
-          <meshStandardMaterial color="#9ca3af" roughness={0.75} metalness={0.05} />
         </mesh>
 
         {/* Accent strip */}
@@ -99,7 +92,7 @@ export function HeroDoor3D() {
   }, []);
 
   const wrapperClass =
-    "relative w-full overflow-hidden bg-hero-gradient aspect-[4/3] sm:aspect-video";
+    "relative w-full overflow-hidden aspect-[4/3] sm:aspect-video";
 
   if (webglOk !== true) {
     return (
@@ -143,13 +136,6 @@ export function HeroDoor3D() {
 
         <group position={[0, -0.05, 0]} scale={1.55}>
           <DoorModel rotate={!reduceMotion} />
-          <ContactShadows
-            position={[0, -1.05, 0]}
-            opacity={0.55}
-            blur={2.2}
-            scale={6}
-            far={3.5}
-          />
         </group>
       </Canvas>
     </div>
