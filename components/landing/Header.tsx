@@ -84,7 +84,7 @@ export function Header() {
                 ))}
                 <Link
                   href="/apply"
-                  className="w-full rounded-lg bg-accent-gradient py-3 text-center text-sm font-semibold text-accent-foreground shadow-accent-glow"
+                  className="w-full rounded-lg bg-accent-gradient py-3 text-center text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
                   onClick={() => setOpen(false)}
                 >
                   Become an Affiliate

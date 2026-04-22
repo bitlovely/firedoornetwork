@@ -141,7 +141,7 @@ export function LandingPage() {
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/apply"
-                className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-white px-8 text-base font-semibold text-black shadow-[0_14px_40px_-18px_rgba(255,255,255,0.55)] transition-colors hover:bg-white/90"
+                className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
               >
                 Become an Affiliate
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -310,32 +310,34 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="trust" className="relative overflow-hidden bg-primary py-24 text-primary-foreground lg:py-32">
-        <div className="pointer-events-none absolute inset-0 bg-glow opacity-50" />
+      <section
+        id="trust"
+        className="relative overflow-hidden bg-black py-24 text-white lg:py-32"
+      >
+        <div className="pointer-events-none absolute inset-0 bg-glow opacity-35" />
+        <div className="pointer-events-none absolute inset-0 opacity-25 [background:radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_55%),radial-gradient(circle_at_70%_70%,rgba(255,106,26,0.14),transparent_55%)]" />
+        <div className="pointer-events-none absolute inset-0 opacity-18 [background-image:url('/trust-bg.svg')] [background-size:cover] [background-position:center] mix-blend-screen" />
         <div className="container relative mx-auto px-4 sm:px-6">
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold tracking-wider text-accent uppercase">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wider text-white/80 uppercase">
                 Trust & compliance
               </div>
               <h2 className="mt-4 font-display text-3xl leading-tight font-extrabold tracking-tight text-balance sm:text-4xl lg:text-5xl">
                 The badge that means something.
               </h2>
-              <p className="mt-4 text-lg text-primary-foreground/70">
+              <p className="mt-4 text-lg text-white/75">
                 Becoming a Verified Affiliate isn&apos;t automatic. We check, we
                 approve, we vouch. That&apos;s why clients pick names from our
                 directory.
               </p>
-              <div className="mt-8 inline-flex items-center gap-3 rounded-xl bg-accent-gradient p-4 shadow-accent-glow">
-                <ShieldCheck
-                  className="h-6 w-6 text-accent-foreground"
-                  strokeWidth={2.5}
-                />
+              <div className="mt-8 inline-flex items-center gap-3 rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur-md">
+                <ShieldCheck className="h-6 w-6 text-white" strokeWidth={2.5} />
                 <div>
-                  <div className="text-xs font-semibold tracking-wider text-accent-foreground/80 uppercase">
+                  <div className="text-xs font-semibold tracking-wider text-white/70 uppercase">
                     FireDoor Network
                   </div>
-                  <div className="font-display text-lg font-bold text-accent-foreground">
+                  <div className="font-display text-lg font-bold text-white">
                     Verified Affiliate
                   </div>
                 </div>
@@ -347,16 +349,16 @@ export function LandingPage() {
                 return (
                   <div
                     key={item.title}
-                    className="flex gap-5 rounded-xl border border-white/10 bg-white/5 p-6 transition-all hover:border-accent/40 hover:bg-white/[0.07]"
+                    className="flex gap-5 rounded-xl border border-white/20 bg-white/8 p-6 backdrop-blur-md transition-all hover:border-white/30 hover:bg-white/12"
                   >
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/15 text-accent">
-                      <Icon className="h-5 w-5" strokeWidth={2.25} />
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white ring-1 ring-white/20">
+                      <Icon className="h-5 w-5 text-white/80" strokeWidth={2.25} />
                     </div>
                     <div>
                       <h3 className="font-display text-lg font-bold">
                         {item.title}
                       </h3>
-                      <p className="mt-1 text-sm leading-relaxed text-primary-foreground/70">
+                      <p className="mt-1 text-sm leading-relaxed text-white/75">
                         {item.description}
                       </p>
                     </div>
@@ -370,13 +372,13 @@ export function LandingPage() {
 
       <section id="directory" className="bg-background py-20 lg:py-28">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="relative overflow-hidden rounded-3xl border border-white/5 bg-hero-gradient p-10 sm:p-14 lg:p-20">
-            <div className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent/30 blur-3xl" />
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black p-10 text-white shadow-[0_30px_90px_-60px_rgba(0,0,0,0.55)] sm:p-14 lg:p-20">
+            <div className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
             <div className="relative max-w-3xl">
-              <h2 className="font-display text-3xl leading-tight font-extrabold tracking-tight text-balance text-primary-foreground sm:text-4xl lg:text-5xl">
+              <h2 className="font-display text-3xl leading-tight font-extrabold tracking-tight text-balance sm:text-4xl lg:text-5xl">
                 Ready to turn your certifications into a queue of clients?
               </h2>
-              <p className="mt-4 max-w-2xl text-lg text-primary-foreground/70">
+              <p className="mt-4 max-w-2xl text-lg text-white/75">
                 Apply today. Most affiliates are verified within 48 hours and listed
                 in the public directory the same week.
               </p>
@@ -390,7 +392,7 @@ export function LandingPage() {
                 </Link>
                 <a
                   href="#"
-                  className="inline-flex h-14 items-center justify-center rounded-lg border border-white/15 px-8 text-base font-semibold text-primary-foreground transition-colors hover:bg-white/10"
+                  className="inline-flex h-14 items-center justify-center rounded-lg border border-white/20 px-8 text-base font-semibold text-white transition-colors hover:bg-white/10"
                 >
                   Talk to the team
                 </a>
@@ -400,7 +402,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-white/5 bg-primary text-primary-foreground">
+      <footer className="border-t border-white/10 bg-black text-white">
         <div className="container mx-auto px-4 py-14 sm:px-6">
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             <div className="lg:col-span-2">
@@ -410,7 +412,7 @@ export function LandingPage() {
                   FireDoor <span className="text-accent">Network</span>
                 </span>
               </Link>
-              <p className="mt-4 max-w-sm text-sm text-primary-foreground/60">
+              <p className="mt-4 max-w-sm text-sm text-white/60">
                 The UK network connecting verified fire door surveyors and
                 inspectors with the clients who need them.
               </p>
@@ -419,7 +421,7 @@ export function LandingPage() {
               <h4 className="font-display text-sm font-bold tracking-wider uppercase">
                 For affiliates
               </h4>
-              <ul className="mt-4 space-y-2 text-sm text-primary-foreground/60">
+              <ul className="mt-4 space-y-2 text-sm text-white/60">
                 <li>
                   <Link href="/apply" className="transition-colors hover:text-accent">
                     Apply now
@@ -446,7 +448,7 @@ export function LandingPage() {
               <h4 className="font-display text-sm font-bold tracking-wider uppercase">
                 Company
               </h4>
-              <ul className="mt-4 space-y-2 text-sm text-primary-foreground/60">
+              <ul className="mt-4 space-y-2 text-sm text-white/60">
                 <li>
                   <a href="#" className="transition-colors hover:text-accent">
                     About
@@ -470,7 +472,7 @@ export function LandingPage() {
               </ul>
             </div>
           </div>
-          <div className="mt-12 flex flex-col justify-between gap-4 border-t border-white/5 pt-8 text-xs text-primary-foreground/50 sm:flex-row">
+          <div className="mt-12 flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/50 sm:flex-row">
             <p>© {new Date().getFullYear()} FireDoor Network. All rights reserved.</p>
             <p>Built for surveyors, by people who know the trade.</p>
           </div>
