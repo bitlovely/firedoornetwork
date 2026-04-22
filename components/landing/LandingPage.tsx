@@ -171,7 +171,7 @@ export function LandingPage() {
           <div className="animate-fade-up [animation-delay:150ms] lg:col-span-5">
             <div className="relative">
               <div className="absolute -inset-4 rounded-full bg-accent/20 blur-3xl" />
-              <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-lg">
+              <div className="relative overflow-hidden rounded-2xl">
                 <HeroDoor3D />
               </div>
             </div>

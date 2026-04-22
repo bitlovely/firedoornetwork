@@ -116,7 +116,7 @@ export function HeroDoor3D() {
         shadows
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: "default" }}
-        camera={{ position: [0, 0.1, 2.65], fov: 34, near: 0.1, far: 50 }}
+        camera={{ position: [0, 0.12, 3.15], fov: 32, near: 0.1, far: 50 }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
         }}
@@ -134,7 +134,7 @@ export function HeroDoor3D() {
         />
         <directionalLight position={[-2.5, 1.5, 3]} intensity={0.6} />
 
-        <group position={[0, -0.05, 0]} scale={1.55}>
+        <group position={[0, -0.12, 0]} scale={1.25}>
           <DoorModel rotate={!reduceMotion} />
         </group>
       </Canvas>
