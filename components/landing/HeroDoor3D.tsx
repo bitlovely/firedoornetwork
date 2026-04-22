@@ -5,19 +5,11 @@ import Image from "next/image";
 import { Canvas, useFrame } from "@react-three/fiber";
 import type * as THREE from "three";
 
-function DoorModel({ rotate }: { rotate: boolean }) {
+function DoorModel() {
   const groupRef = useRef<THREE.Group | null>(null);
 
-  useFrame((state, delta) => {
-    if (!rotate) return;
-    const g = groupRef.current;
-    if (!g) return;
-    g.rotation.y += delta * 0.18;
-    g.rotation.x = Math.sin(state.clock.elapsedTime * 0.35) * 0.05;
-  });
-
   return (
-    <group ref={groupRef} rotation={[0, -0.45, 0]}>
+    <group ref={groupRef} rotation={[0.02, -0.35, 0]}>
       <group>
         {/* Double fire doors (reference-inspired) */}
         <mesh position={[-0.28, 0.1, 0]} castShadow receiveShadow>
@@ -69,6 +61,29 @@ function DoorModel({ rotate }: { rotate: boolean }) {
       </group>
     </group>
   );
+}
+
+function Rig({
+  enabled,
+  children,
+}: {
+  enabled: boolean;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<THREE.Group | null>(null);
+  useFrame((state, delta) => {
+    if (!enabled) return;
+    const g = ref.current;
+    if (!g) return;
+    // pointer: [-1..1] range
+    const px = state.pointer.x;
+    const py = state.pointer.y;
+    const targetX = -py * 0.08;
+    const targetY = px * 0.14;
+    g.rotation.x += (targetX - g.rotation.x) * Math.min(1, delta * 6);
+    g.rotation.y += (targetY - g.rotation.y) * Math.min(1, delta * 6);
+  });
+  return <group ref={ref}>{children}</group>;
 }
 
 export function HeroDoor3D() {
@@ -144,8 +159,10 @@ export function HeroDoor3D() {
         />
         <directionalLight position={[-2.5, 1.5, 3]} intensity={0.6} />
 
-        <group position={[0, -0.18, 0]} scale={1.1}>
-          <DoorModel rotate={!reduceMotion} />
+        <group position={[0, -0.18, 0]} scale={0.9}>
+          <Rig enabled={!reduceMotion}>
+            <DoorModel />
+          </Rig>
         </group>
       </Canvas>
     </div>

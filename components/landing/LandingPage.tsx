@@ -173,7 +173,9 @@ export function LandingPage() {
             <div className="relative">
               <div className="absolute -inset-4 rounded-full bg-accent/20 blur-3xl" />
               <div className="relative overflow-hidden">
-                <HeroDoor3D />
+                <div className="mx-auto w-full max-w-sm sm:max-w-md lg:max-w-sm">
+                  <HeroDoor3D />
+                </div>
               </div>
             </div>
           </div>
