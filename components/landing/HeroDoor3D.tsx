@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
 import type * as THREE from "three";
@@ -22,13 +23,13 @@ function DoorModel({ rotate }: { rotate: boolean }) {
         {/* Door slab */}
         <mesh position={[0, 0.1, 0]} castShadow receiveShadow>
           <boxGeometry args={[1.05, 2.05, 0.12]} />
-          <meshStandardMaterial color="#0b1324" roughness={0.55} metalness={0.1} />
+          <meshStandardMaterial color="#e5e7eb" roughness={0.62} metalness={0.05} />
         </mesh>
 
         {/* Frame */}
         <mesh position={[0, 0.1, -0.09]} castShadow receiveShadow>
           <boxGeometry args={[1.16, 2.16, 0.05]} />
-          <meshStandardMaterial color="#111827" roughness={0.7} metalness={0.05} />
+          <meshStandardMaterial color="#9ca3af" roughness={0.75} metalness={0.05} />
         </mesh>
 
         {/* Accent strip */}
@@ -98,23 +99,15 @@ export function HeroDoor3D() {
   }, []);
 
   if (webglOk !== true) {
-    // User requested “3D only” — when WebGL is unavailable we show a clear message
-    // instead of swapping in a static image.
     return (
-      <div className="aspect-video w-full bg-hero-gradient">
-        <div className="flex h-full w-full items-center justify-center px-8 text-center">
-          <div className="max-w-md rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <p className="text-sm font-semibold text-primary-foreground">
-              3D preview unavailable
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-primary-foreground/70">
-              Your browser couldn’t create a WebGL context (common in VM/sandboxed
-              GPU setups). Enable hardware acceleration/WebGL, or run outside the
-              VM to see the rotating 3D door.
-            </p>
-          </div>
-        </div>
-      </div>
+      <Image
+        src="/hero-firedoor.jpg"
+        alt="Modern fire-rated door with certification label in a commercial corridor"
+        width={1600}
+        height={900}
+        className="h-auto w-full object-cover"
+        priority
+      />
     );
   }
 
@@ -124,7 +117,7 @@ export function HeroDoor3D() {
         shadows
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: "default" }}
-        camera={{ position: [0, 0.25, 3.2], fov: 38, near: 0.1, far: 50 }}
+        camera={{ position: [0, 0.15, 2.35], fov: 36, near: 0.1, far: 50 }}
         onCreated={({ gl }) => {
           gl.setClearColor(0x000000, 0);
         }}
@@ -140,7 +133,7 @@ export function HeroDoor3D() {
         />
         <directionalLight position={[-2.5, 1.5, 3]} intensity={0.6} />
 
-        <group position={[0, -0.25, 0]}>
+        <group position={[0, -0.15, 0]} scale={1.25}>
           <DoorModel rotate={!reduceMotion} />
           <ContactShadows
             position={[0, -1.05, 0]}
