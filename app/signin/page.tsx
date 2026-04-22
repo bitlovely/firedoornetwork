@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Lock } from "lucide-react";
 import { authPrimaryButtonClassName } from "@/components/auth/authPrimaryButtonClassName";
@@ -10,8 +11,23 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="container relative mx-auto flex min-h-screen items-center justify-center px-4 py-14 sm:px-6">
+    <main className="relative min-h-dvh w-full overflow-hidden text-white">
+      <div
+        className="pointer-events-none absolute inset-0 z-0 select-none"
+        aria-hidden
+      >
+        <Image
+          src="/hero-firedoor.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+          quality={80}
+        />
+        <div className="absolute inset-0 bg-black/68" />
+      </div>
+
+      <div className="container relative z-10 mx-auto flex min-h-dvh items-center justify-center px-4 py-14 sm:px-6">
         <div className="w-full max-w-md">
           <div className="rounded-3xl border border-white/15 bg-white/8 p-8 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md sm:p-10">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20">
