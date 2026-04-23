@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { BUCKET } from "@/lib/affiliate-application";
 
 export const runtime = "nodejs";
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !anon) {
@@ -22,22 +23,26 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const body = (await request.json().catch(() => null)) as { path?: string } | null;
+  const path = body?.path;
+  if (typeof path !== "string" || path.length === 0) {
+    return NextResponse.json({ error: "Missing path" }, { status: 400 });
+  }
+
   const publicClient = createClient(url, anon, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: { headers: { Authorization: `Bearer ${token}` } },
   });
-
   const { data: userData, error: userErr } = await publicClient.auth.getUser();
   if (userErr || !userData.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Ensure the requested storage path belongs to the signed-in user’s application.
   const admin = createAdminClient();
   const { data, error } = await admin
     .from("affiliate_applications")
-    .select(
-      "id,status,full_name,company_name,email,phone,postcode,years_experience,areas_covered,created_at,certification_paths,insurance_path,dbs_path",
-    )
+    .select("id,certification_paths,insurance_path,dbs_path")
     .eq("user_id", userData.user.id)
     .order("created_at", { ascending: false })
     .limit(1)
@@ -50,6 +55,26 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "No application found" }, { status: 404 });
   }
 
-  return NextResponse.json({ application: data }, { status: 200 });
+  const certs = Array.isArray(data.certification_paths)
+    ? (data.certification_paths.filter((v): v is string => typeof v === "string") as string[])
+    : [];
+  const allowed = new Set<string>([
+    ...certs,
+    ...(typeof data.insurance_path === "string" ? [data.insurance_path] : []),
+    ...(typeof data.dbs_path === "string" ? [data.dbs_path] : []),
+  ]);
+
+  if (!allowed.has(path)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const { data: signed, error: signErr } = await admin.storage
+    .from(BUCKET)
+    .createSignedUrl(path, 60);
+
+  if (signErr) {
+    return NextResponse.json({ error: signErr.message }, { status: 500 });
+  }
+  return NextResponse.json({ url: signed.signedUrl }, { status: 200 });
 }
 

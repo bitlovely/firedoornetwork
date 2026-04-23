@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Download, LogOut } from "lucide-react";
+import { ChevronRight, LogOut } from "lucide-react";
 import { authPrimaryButtonClassName } from "@/components/auth/authPrimaryButtonClassName";
 
 type Application = {
@@ -26,6 +26,10 @@ type Application = {
 function toArray(v: unknown): string[] {
   if (Array.isArray(v)) return v.filter((x): x is string => typeof x === "string");
   return [];
+}
+
+function countBy(apps: Application[], status: string) {
+  return apps.reduce((acc, a) => (a.status === status ? acc + 1 : acc), 0);
 }
 
 export function AdminDashboardClient() {
@@ -72,9 +76,15 @@ export function AdminDashboardClient() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ status }),
       });
-      const json = (await res.json()) as { application?: Application; error?: string };
-      if (!res.ok || !json.application) throw new Error(json.error ?? "Update failed");
-      setApps((prev) => prev.map((a) => (a.id === id ? json.application! : a)));
+      const json = (await res.json().catch(() => null)) as
+        | { application?: Application; error?: string }
+        | null;
+      if (!res.ok || !json?.application) {
+        throw new Error(json?.error ?? "Update failed");
+      }
+      setApps((prev) => prev.map((a) => (a.id === id ? json.application : a)));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Update failed");
     } finally {
       setSaving((s) => ({ ...s, [id]: false }));
     }
@@ -88,9 +98,15 @@ export function AdminDashboardClient() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ internal_notes }),
       });
-      const json = (await res.json()) as { application?: Application; error?: string };
-      if (!res.ok || !json.application) throw new Error(json.error ?? "Update failed");
-      setApps((prev) => prev.map((a) => (a.id === id ? json.application! : a)));
+      const json = (await res.json().catch(() => null)) as
+        | { application?: Application; error?: string }
+        | null;
+      if (!res.ok || !json?.application) {
+        throw new Error(json?.error ?? "Update failed");
+      }
+      setApps((prev) => prev.map((a) => (a.id === id ? json.application : a)));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Update failed");
     } finally {
       setSaving((s) => ({ ...s, [id]: false }));
     }
@@ -123,13 +139,6 @@ export function AdminDashboardClient() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <button
-              type="button"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-              onClick={load}
-            >
-              Refresh
-            </button>
             <button type="button" className={authPrimaryButtonClassName} onClick={signOut}>
               <span className="inline-flex items-center justify-center gap-2">
                 <LogOut className="h-4 w-4" />
@@ -138,6 +147,49 @@ export function AdminDashboardClient() {
             </button>
           </div>
         </div>
+
+        {!pending && !error ? (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="rounded-3xl border border-white/15 bg-white/8 p-5 backdrop-blur-md">
+              <p className="text-xs font-semibold tracking-wider text-white/70 uppercase">
+                Total
+              </p>
+              <p className="mt-2 font-display text-3xl font-extrabold">{apps.length}</p>
+            </div>
+            <div className="rounded-3xl border border-amber-400/25 bg-amber-400/10 p-5">
+              <p className="text-xs font-semibold tracking-wider text-amber-200/80 uppercase">
+                Pending
+              </p>
+              <p className="mt-2 font-display text-3xl font-extrabold text-amber-100">
+                {countBy(apps, "pending")}
+              </p>
+            </div>
+            <div className="rounded-3xl border border-emerald-400/25 bg-emerald-400/10 p-5">
+              <p className="text-xs font-semibold tracking-wider text-emerald-200/80 uppercase">
+                Approved
+              </p>
+              <p className="mt-2 font-display text-3xl font-extrabold text-emerald-100">
+                {countBy(apps, "approved")}
+              </p>
+            </div>
+            <div className="rounded-3xl border border-cyan-400/25 bg-cyan-400/10 p-5">
+              <p className="text-xs font-semibold tracking-wider text-cyan-200/80 uppercase">
+                Verified
+              </p>
+              <p className="mt-2 font-display text-3xl font-extrabold text-cyan-100">
+                {countBy(apps, "verified")}
+              </p>
+            </div>
+            <div className="rounded-3xl border border-rose-400/25 bg-rose-400/10 p-5">
+              <p className="text-xs font-semibold tracking-wider text-rose-200/80 uppercase">
+                Rejected
+              </p>
+              <p className="mt-2 font-display text-3xl font-extrabold text-rose-100">
+                {countBy(apps, "rejected")}
+              </p>
+            </div>
+          </div>
+        ) : null}
 
         {pending ? (
           <div className="mt-10 rounded-3xl border border-white/15 bg-white/8 p-7 backdrop-blur-md">
@@ -151,145 +203,38 @@ export function AdminDashboardClient() {
             {error}
           </div>
         ) : (
-          <div className="mt-10 grid gap-6">
-            {apps.map((a) => {
-              const certs = toArray(a.certification_paths);
-              const busy = Boolean(saving[a.id]);
-              return (
-                <article
+          <div className="mt-10 rounded-3xl border border-white/15 bg-white/8 p-4 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md sm:p-5">
+            <div className="flex items-center justify-between px-3 py-2">
+              <p className="text-xs font-semibold tracking-wider text-white/70 uppercase">
+                Applications
+              </p>
+              <p className="text-xs text-white/60">{apps.length} shown</p>
+            </div>
+            <div className="max-h-[70dvh] overflow-auto">
+              {apps.map((a) => (
+                <Link
                   key={a.id}
-                  className="rounded-3xl border border-white/15 bg-white/8 p-7 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md sm:p-9"
+                  href={`/admin/dashboard/${encodeURIComponent(a.id)}`}
+                  className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 transition-colors hover:bg-white/10"
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                      <p className="text-xs font-semibold tracking-wider text-white uppercase">
-                        Applicant
-                      </p>
-                      <h2 className="mt-1 font-display text-xl font-bold">
-                        {a.full_name}
-                      </h2>
-                      <p className="mt-1 text-sm text-white/80">{a.company_name}</p>
-                      <p className="mt-2 text-sm text-white/90">
-                        {a.email} · {a.phone}
-                      </p>
-                      <p className="mt-1 text-sm text-white/80">
-                        Postcode: {a.postcode} · Experience: {a.years_experience}y
-                      </p>
-                    </div>
-
-                    <div className="min-w-[220px]">
-                      <p className="text-xs font-semibold tracking-wider text-white uppercase">
-                        Status
-                      </p>
-                      <p className="mt-1 text-lg font-semibold">{a.status}</p>
-
-                      <div className="mt-3 grid grid-cols-3 gap-2">
-                        <button
-                          type="button"
-                          disabled={busy}
-                          onClick={() => setStatus(a.id, "approved")}
-                          className="inline-flex h-10 items-center justify-center rounded-xl bg-white/10 px-3 text-xs font-semibold text-white hover:bg-white/15 disabled:opacity-60"
-                        >
-                          Approve
-                        </button>
-                        <button
-                          type="button"
-                          disabled={busy}
-                          onClick={() => setStatus(a.id, "rejected")}
-                          className="inline-flex h-10 items-center justify-center rounded-xl bg-white/10 px-3 text-xs font-semibold text-white hover:bg-white/15 disabled:opacity-60"
-                        >
-                          Reject
-                        </button>
-                        <button
-                          type="button"
-                          disabled={busy}
-                          onClick={() => setStatus(a.id, "verified")}
-                          className="inline-flex h-10 items-center justify-center rounded-xl bg-accent-gradient px-3 text-xs font-semibold text-accent-foreground shadow-accent-glow hover:opacity-95 disabled:opacity-60"
-                        >
-                          Verify
-                        </button>
-                      </div>
-
-                      <div className="mt-3">
-                        <Link
-                          href={`/affiliates/${encodeURIComponent(a.id)}`}
-                          className="text-sm text-white underline-offset-4 hover:underline"
-                        >
-                          Public profile (approved/verified only)
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 grid gap-6 lg:grid-cols-3">
-                    <div className="lg:col-span-2">
-                      <p className="text-xs font-semibold tracking-wider text-white uppercase">
-                        Coverage area
-                      </p>
-                      <p className="mt-2 whitespace-pre-wrap text-sm text-white/90">
-                        {a.areas_covered}
-                      </p>
-                    </div>
-
-                    <div>
-                      <p className="text-xs font-semibold tracking-wider text-white uppercase">
-                        Documents
-                      </p>
-                      <div className="mt-2 space-y-2">
-                        {certs.map((path, idx) => (
-                          <button
-                            key={path}
-                            type="button"
-                            disabled={busy}
-                            onClick={() => download(a.id, path)}
-                            className="inline-flex w-full items-center justify-between gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white hover:bg-white/10 disabled:opacity-60"
-                          >
-                            <span className="truncate">Certification {idx + 1}</span>
-                            <Download className="h-4 w-4 shrink-0" />
-                          </button>
-                        ))}
-                        <button
-                          type="button"
-                          disabled={busy}
-                          onClick={() => download(a.id, a.insurance_path)}
-                          className="inline-flex w-full items-center justify-between gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white hover:bg-white/10 disabled:opacity-60"
-                        >
-                          <span className="truncate">Insurance</span>
-                          <Download className="h-4 w-4 shrink-0" />
-                        </button>
-                        {a.dbs_path ? (
-                          <button
-                            type="button"
-                            disabled={busy}
-                            onClick={() => download(a.id, a.dbs_path!)}
-                            className="inline-flex w-full items-center justify-between gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white hover:bg-white/10 disabled:opacity-60"
-                          >
-                            <span className="truncate">DBS</span>
-                            <Download className="h-4 w-4 shrink-0" />
-                          </button>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <p className="text-xs font-semibold tracking-wider text-white uppercase">
-                      Internal notes
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-white">
+                      {a.full_name}
                     </p>
-                    <textarea
-                      defaultValue={a.internal_notes ?? ""}
-                      rows={3}
-                      className="mt-2 w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white outline-none transition-colors focus:border-white/35 focus:ring-2 focus:ring-white/20"
-                      placeholder="Notes for reviewers…"
-                      onBlur={(e) => saveNotes(a.id, e.currentTarget.value)}
-                    />
-                    <p className="mt-2 text-xs text-white/60">
-                      Saved on blur. {busy ? "Saving…" : ""}
+                    <p className="mt-1 truncate text-xs text-white/70">
+                      {a.company_name} · {a.postcode}
                     </p>
+                    <p className="mt-1 truncate text-xs text-white/60">{a.email}</p>
                   </div>
-                </article>
-              );
-            })}
+                  <div className="flex shrink-0 items-center gap-3">
+                    <span className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs font-semibold text-white/90">
+                      {a.status}
+                    </span>
+                    <ChevronRight className="h-4 w-4 text-white/60" />
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </div>
