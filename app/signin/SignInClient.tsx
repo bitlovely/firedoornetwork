@@ -29,7 +29,22 @@ export function SignInClient() {
       if (error) {
         const msg = error.message || "Sign-in failed";
         if (msg.toLowerCase().includes("invalid login credentials")) {
-          setError("You have not registered yet. Please sign up first.");
+          try {
+            const res = await fetch(
+              `/api/auth/email-exists?email=${encodeURIComponent(email)}`,
+            );
+            const json = (await res.json().catch(() => null)) as
+              | { exists?: boolean; error?: string }
+              | null;
+            if (res.ok && json?.exists === true) {
+              setError("Invalid credentials.");
+            } else {
+              setError("You have not registered yet. Please sign up first.");
+            }
+          } catch {
+            // Fallback when the helper check fails.
+            setError("Invalid credentials.");
+          }
         } else {
           setError(msg);
         }
