@@ -59,7 +59,7 @@ export function Header() {
                 Sign in
               </Link>
               <Link
-                href="/apply"
+                href="/signup"
                 className="rounded-lg bg-accent-gradient px-4 py-2 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
               >
                 Become an Affiliate
@@ -91,7 +91,7 @@ export function Header() {
                   </a>
                 ))}
                 <Link
-                  href="/apply"
+                  href="/signup"
                   className="w-full rounded-lg bg-accent-gradient py-3 text-center text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
                   onClick={() => setOpen(false)}
                 >

@@ -27,10 +27,19 @@ export function SignInClient() {
       const supabase = createBrowserClient();
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
-        setError(error.message);
+        const msg = error.message || "Sign-in failed";
+        if (msg.toLowerCase().includes("invalid login credentials")) {
+          setError("You have not registered yet. Please sign up first.");
+        } else {
+          setError(msg);
+        }
         return;
       }
       router.push("/dashboard");
+    } catch {
+      setError(
+        "Unable to reach the sign-in service. Please check your internet connection and Supabase settings.",
+      );
     } finally {
       setPending(false);
     }

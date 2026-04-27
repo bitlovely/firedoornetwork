@@ -8,6 +8,7 @@ import {
   Download,
   MapPin,
 } from "lucide-react";
+import { CompleteRegistrationDialog } from "./CompleteRegistrationDialog";
 
 type Application = {
   id: string;
@@ -54,6 +55,7 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [app, setApp] = useState<Application | null>(null);
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [showRegister, setShowRegister] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -74,7 +76,7 @@ export default function DashboardPage() {
           headers: { Authorization: `Bearer ${token}` },
         });
         const json = (await res.json()) as
-          | { application: Application }
+          | { application: Application | null }
           | { error: string };
         if (!res.ok) {
           throw new Error("error" in json ? json.error : "Unable to load dashboard");
@@ -82,7 +84,10 @@ export default function DashboardPage() {
         if (!("application" in json)) {
           throw new Error("Unable to load dashboard");
         }
-        if (!cancelled) setApp(json.application);
+        if (!cancelled) {
+          setApp(json.application);
+          setShowRegister(json.application == null);
+        }
       } catch (e) {
         if (!cancelled) setError(e instanceof Error ? e.message : "Something went wrong");
       } finally {
@@ -309,11 +314,28 @@ export default function DashboardPage() {
               </div>
             ) : (
               <div className="rounded-3xl border border-white/15 bg-white/8 p-7 backdrop-blur-md">
-                <p className="text-sm text-white/80">No application found.</p>
+                <p className="text-sm text-white/80">
+                  You’re signed in, but not registered as an affiliate yet.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowRegister(true)}
+                  className="mt-5 inline-flex h-12 items-center justify-center rounded-2xl bg-accent-gradient px-6 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
+                >
+                  Complete registration
+                </button>
               </div>
             )}
         </div>
       </div>
+      <CompleteRegistrationDialog
+        open={showRegister}
+        onClose={() => setShowRegister(false)}
+        onCompleted={() => {
+          // Reload application after completing registration.
+          window.location.reload();
+        }}
+      />
     </main>
   );
 }

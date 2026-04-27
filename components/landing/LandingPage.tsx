@@ -118,23 +118,22 @@ export function LandingPage() {
           <div className="animate-fade-up w-full max-w-3xl text-center">
             <div className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold tracking-wider text-white/80 uppercase">
               <Sparkles className="h-3.5 w-3.5" />
-              The UK network for fire door professionals
+              Affiliate Network
             </div>
             <h1 className="mt-6 font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance text-white sm:text-5xl lg:text-6xl xl:text-7xl">
-              A network that{" "}
+              Get listed. Get leads.{" "}
               <span className="relative inline-block">
-                <span className="relative z-10 text-white">leads to work.</span>
+                <span className="relative z-10 text-white">Grow your business.</span>
                 <span className="absolute right-0 -bottom-1 left-0 h-1 rounded-full bg-white/35" />
               </span>
             </h1>
             <p className="mt-6 mx-auto max-w-2xl text-lg text-balance text-white/70 sm:text-xl">
-              FireDoor Network connects verified fire door surveyors and inspectors
-              with property managers, contractors and clients who need them. No
-              noticeboards. No politics. Just real jobs in your area.
+              Nationwide inspection opportunities for verified fire door surveyors and
+              inspectors. Get discovered by clients who need compliant fire door work.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
-                href="/apply"
+                href="/signup"
                 className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
               >
                 Become an Affiliate
@@ -378,7 +377,7 @@ export function LandingPage() {
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/apply"
+                  href="/signup"
                   className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
                 >
                   Become an Affiliate

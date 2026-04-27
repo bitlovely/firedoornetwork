@@ -47,7 +47,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
   if (!data) {
-    return NextResponse.json({ error: "No application found" }, { status: 404 });
+    return NextResponse.json({ application: null }, { status: 200 });
   }
 
   return NextResponse.json({ application: data }, { status: 200 });

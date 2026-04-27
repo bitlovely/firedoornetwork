@@ -39,7 +39,7 @@ export function SiteFooter() {
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-white/60">
               <li>
-                <Link href="/apply" className="transition-colors hover:text-accent">
+                <Link href="/signup" className="transition-colors hover:text-accent">
                   Apply now
                 </Link>
               </li>
