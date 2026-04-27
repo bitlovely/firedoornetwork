@@ -7,6 +7,7 @@ import {
   BUCKET,
   sanitizeFilename,
 } from "@/lib/affiliate-application";
+import { sendApplicationReceivedEmail } from "@/lib/email/send-application-received";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export const runtime = "nodejs";
@@ -244,6 +245,17 @@ export async function POST(request: Request) {
       .single();
 
     if (insertError) throw new Error(insertError.message);
+
+    try {
+      await sendApplicationReceivedEmail({
+        to: fields.email,
+        applicantName: fields.full_name,
+        companyName: fields.company_name,
+      });
+    } catch (emailErr) {
+      console.error("[register-affiliate] confirmation email failed:", emailErr);
+    }
+
     return NextResponse.json({ id: inserted.id }, { status: 201 });
   } catch (e) {
     if (uploadedPaths.length > 0) {
