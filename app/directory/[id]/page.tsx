@@ -107,12 +107,7 @@ export default async function DirectoryAffiliateProfilePage({
             <BadgeCheck className="h-3.5 w-3.5" />
             Verified
           </span>
-        ) : (
-          <span className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs font-semibold text-white/70">
-            <X className="h-3.5 w-3.5" />
-            Not verified
-          </span>
-        )}
+        ) : null}
       </div>
     );
   }
@@ -214,7 +209,11 @@ export default async function DirectoryAffiliateProfilePage({
           </div>
 
           <div className="mt-8 grid gap-6 lg:grid-cols-3">
-            <section className="rounded-3xl border border-white/15 bg-white/8 p-7 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md lg:col-span-2 sm:p-9">
+            <section
+              className={`rounded-3xl border border-white/15 bg-white/8 p-7 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md sm:p-9 ${
+                contactEnabled ? "lg:col-span-2" : "lg:col-span-3"
+              }`}
+            >
               <h2 className="font-display text-lg font-bold">Bio</h2>
               <p className="mt-2 whitespace-pre-wrap text-sm text-white/90">
                 {p.bio ?? ""}
