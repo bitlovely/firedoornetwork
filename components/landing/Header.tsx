@@ -7,9 +7,9 @@ import { Menu, X } from "lucide-react";
 import { createBrowserClient } from "@/lib/supabase/browser";
 
 const nav = [
-  { label: "How it works", href: "#how" },
-  { label: "Why join", href: "#why" },
-  { label: "Trust", href: "#trust" },
+  { label: "How it works", href: "/#how" },
+  { label: "Why join", href: "/#why" },
+  { label: "Trust", href: "/#trust" },
   { label: "Directory", href: "/directory" },
 ] as const;
 
@@ -63,13 +63,13 @@ export function Header() {
 
             <div className="hidden items-center gap-8 md:flex">
               {nav.map((item) => (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   className="text-sm font-semibold text-primary-foreground/85 underline-offset-8 transition-colors hover:text-primary-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </div>
 
@@ -112,14 +112,14 @@ export function Header() {
             <div className="border-t border-white/12 bg-primary/55 backdrop-blur-md md:hidden">
               <div className="flex flex-col gap-4 px-4 py-4">
                 {nav.map((item) => (
-                  <a
+                  <Link
                     key={item.href}
                     href={item.href}
                     className="text-sm font-semibold text-primary-foreground/90"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
                 {signedIn ? (
                   <Link

@@ -16,6 +16,9 @@ function LogoMark() {
   );
 }
 
+const contactEmail =
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "contact@firedoornetwork.com";
+
 export function SiteFooter() {
   return (
     <footer className="border-t border-white/10 bg-black text-white">
@@ -44,14 +47,19 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <a href="#how" className="transition-colors hover:text-accent">
+                <Link href="/#how" className="transition-colors hover:text-accent">
                   How it works
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#why" className="transition-colors hover:text-accent">
+                <Link href="/#why" className="transition-colors hover:text-accent">
                   Why join
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/#trust" className="transition-colors hover:text-accent">
+                  Trust
+                </Link>
               </li>
               <li>
                 <Link href="/signin" className="transition-colors hover:text-accent">
@@ -64,24 +72,22 @@ export function SiteFooter() {
             <h4 className="font-display text-sm font-bold tracking-wider uppercase">Company</h4>
             <ul className="mt-4 space-y-2 text-sm text-white/60">
               <li>
-                <a href="#" className="transition-colors hover:text-accent">
-                  About
-                </a>
-              </li>
-              <li>
                 <Link href="/terms" className="transition-colors hover:text-accent">
                   Terms
                 </Link>
               </li>
               <li>
-                <a href="#" className="transition-colors hover:text-accent">
-                  Contact
-                </a>
-              </li>
-              <li>
                 <Link href="/privacy" className="transition-colors hover:text-accent">
                   Privacy
                 </Link>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${contactEmail}`}
+                  className="transition-colors hover:text-accent"
+                >
+                  Contact us
+                </a>
               </li>
             </ul>
           </div>
