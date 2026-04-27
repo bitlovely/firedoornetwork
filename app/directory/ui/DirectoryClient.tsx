@@ -10,6 +10,7 @@ type Affiliate = {
   full_name: string;
   company_name: string;
   postcode: string;
+  bio: string | null;
   email: string | null;
   phone: string | null;
   contact_enabled: boolean;
@@ -215,38 +216,44 @@ export function DirectoryClient() {
                 key={a.id}
                 className="rounded-3xl border border-white/15 bg-white/8 p-6 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <h2 className="truncate font-display text-lg font-extrabold">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="break-words font-display text-lg font-extrabold">
                       {a.full_name}
                     </h2>
-                    <p className="mt-1 truncate text-sm text-white/80">
-                      {a.company_name}
-                    </p>
+                    <p className="mt-1 break-words text-sm text-white/80">{a.company_name}</p>
                     <p className="mt-2 inline-flex items-center gap-2 text-sm text-white/90">
-                      <MapPin className="h-4 w-4 text-white/70" />
+                      <MapPin className="h-4 w-4 shrink-0 text-white/70" />
                       {a.postcode}
                     </p>
+                    {a.bio?.trim() ? (
+                      <p className="mt-4 text-sm leading-relaxed text-white/75 line-clamp-5">
+                        {a.bio.trim()}
+                      </p>
+                    ) : null}
                   </div>
-                  {badge(a.status)}
+
+                  <div className="flex shrink-0 flex-row items-center justify-end gap-2 sm:flex-col sm:items-end sm:gap-2">
+                    {badge(a.status)}
+                    <Link
+                      href={`/directory/${encodeURIComponent(a.id)}`}
+                      className="inline-flex h-9 w-fit items-center justify-center rounded-xl border border-white/15 bg-white/5 px-3.5 text-xs font-semibold text-white hover:bg-white/10 sm:h-10 sm:px-4 sm:text-sm"
+                    >
+                      View profile
+                    </Link>
+                  </div>
                 </div>
 
-                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                  <Link
-                    href={`/directory/${encodeURIComponent(a.id)}`}
-                    className="inline-flex h-11 flex-1 items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 text-sm font-semibold text-white hover:bg-white/10"
-                  >
-                    View profile
-                  </Link>
-                  {a.contact_enabled && a.email ? (
+                {a.contact_enabled && a.email ? (
+                  <div className="mt-4 flex justify-end border-t border-white/10 pt-4">
                     <a
                       href={`mailto:${encodeURIComponent(a.email)}`}
-                      className="inline-flex h-11 flex-1 items-center justify-center rounded-2xl bg-accent-gradient px-4 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
+                      className="inline-flex h-10 w-fit items-center justify-center rounded-2xl bg-accent-gradient px-5 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
                     >
                       Contact
                     </a>
-                  ) : null}
-                </div>
+                  </div>
+                ) : null}
               </article>
             ))}
           </div>
