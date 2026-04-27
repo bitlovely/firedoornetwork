@@ -85,6 +85,25 @@ export async function PATCH(
   }
 
   const supabase = createAdminClient();
+
+  // Approving when every required doc check is already true → verified (same rule as doc toggles).
+  if (status === "approved") {
+    const { data: row, error: rowErr } = await supabase
+      .from("affiliate_applications")
+      .select("dbs_path,verified_insurance,verified_certification,identity_checked")
+      .eq("id", id)
+      .single();
+    if (!rowErr && row) {
+      const identityRequired = Boolean(row.dbs_path);
+      const allVerified = identityRequired
+        ? Boolean(row.verified_insurance && row.verified_certification && row.identity_checked)
+        : Boolean(row.verified_insurance && row.verified_certification);
+      if (allVerified) {
+        patch.status = "verified";
+      }
+    }
+  }
+
   if (isDocVerificationPatch) {
     const { data: current, error: currentErr } = await supabase
       .from("affiliate_applications")

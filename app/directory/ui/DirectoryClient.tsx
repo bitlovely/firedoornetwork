@@ -11,17 +11,27 @@ type Affiliate = {
   company_name: string;
   postcode: string;
   bio: string | null;
+  profile_photo_path: string | null;
   email: string | null;
   phone: string | null;
   contact_enabled: boolean;
   created_at: string;
 };
 
+function initialsFromName(fullName: string) {
+  return fullName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((s) => s[0]?.toUpperCase())
+    .join("");
+}
+
 function badge(status: string) {
   if (status !== "verified") return null;
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2.5 py-1 text-xs font-semibold text-cyan-200">
-      <ShieldCheck className="h-3.5 w-3.5" />
+    <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2 py-0.5 text-[11px] font-semibold text-cyan-200 sm:px-2.5 sm:py-1 sm:text-xs">
+      <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
       Verified Affiliate
     </span>
   );
@@ -218,26 +228,44 @@ export function DirectoryClient() {
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
                   <div className="min-w-0 flex-1">
-                    <h2 className="break-words font-display text-lg font-extrabold">
-                      {a.full_name}
-                    </h2>
-                    <p className="mt-1 break-words text-sm text-white/80">{a.company_name}</p>
-                    <p className="mt-2 inline-flex items-center gap-2 text-sm text-white/90">
-                      <MapPin className="h-4 w-4 shrink-0 text-white/70" />
-                      {a.postcode}
-                    </p>
-                    {a.bio?.trim() ? (
-                      <p className="mt-4 text-sm leading-relaxed text-white/75 line-clamp-5">
-                        {a.bio.trim()}
-                      </p>
-                    ) : null}
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white/8 text-xs font-semibold text-white/80">
+                        {a.profile_photo_path ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={`/api/public/profile-photo?id=${encodeURIComponent(a.id)}`}
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          initialsFromName(a.full_name) || "—"
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <h2 className="break-words font-display text-lg font-extrabold">
+                            {a.full_name}
+                          </h2>
+                          {badge(a.status)}
+                        </div>
+                        <p className="mt-1 break-words text-sm text-white/80">{a.company_name}</p>
+                        <p className="mt-2 inline-flex items-center gap-2 text-sm text-white/90">
+                          <MapPin className="h-4 w-4 shrink-0 text-white/70" />
+                          {a.postcode}
+                        </p>
+                        {a.bio?.trim() ? (
+                          <p className="mt-4 text-sm leading-relaxed text-white/75 line-clamp-5">
+                            {a.bio.trim()}
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex shrink-0 flex-row items-center justify-end gap-2 sm:flex-col sm:items-end sm:gap-2">
-                    {badge(a.status)}
+                  <div className="flex shrink-0 justify-end sm:items-start">
                     <Link
                       href={`/directory/${encodeURIComponent(a.id)}`}
-                      className="inline-flex h-9 w-fit items-center justify-center rounded-xl border border-white/15 bg-white/5 px-3.5 text-xs font-semibold text-white hover:bg-white/10 sm:h-10 sm:px-4 sm:text-sm"
+                      className="inline-flex h-9 w-fit items-center justify-center rounded-xl bg-accent-gradient px-3.5 text-xs font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95 sm:h-10 sm:px-4 sm:text-sm"
                     >
                       View profile
                     </Link>
