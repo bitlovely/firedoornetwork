@@ -139,12 +139,12 @@ export function LandingPage() {
                 Become an Affiliate
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <a
-                href="#directory"
+              <Link
+                href="/directory"
                 className="inline-flex h-14 items-center justify-center rounded-lg border border-white/20 bg-transparent px-8 text-base font-semibold text-white transition-colors hover:bg-white/10"
               >
                 Browse the directory
-              </a>
+              </Link>
             </div>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-white/60">
               <div className="flex items-center gap-2">

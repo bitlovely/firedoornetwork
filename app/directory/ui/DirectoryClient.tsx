@@ -226,8 +226,8 @@ export function DirectoryClient() {
                 key={a.id}
                 className="rounded-3xl border border-white/15 bg-white/8 p-6 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md"
               >
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-                  <div className="min-w-0 flex-1">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-6">
+                  <div className="min-w-0">
                     <div className="flex items-start gap-3 sm:gap-4">
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white/8 text-xs font-semibold text-white/80">
                         {a.profile_photo_path ? (
@@ -262,10 +262,10 @@ export function DirectoryClient() {
                     </div>
                   </div>
 
-                  <div className="flex shrink-0 justify-end sm:items-start">
+                  <div className="flex w-full sm:w-auto sm:shrink-0 sm:justify-end">
                     <Link
                       href={`/directory/${encodeURIComponent(a.id)}`}
-                      className="inline-flex h-9 w-fit items-center justify-center rounded-xl bg-accent-gradient px-3.5 text-xs font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95 sm:h-10 sm:px-4 sm:text-sm"
+                      className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-accent-gradient px-4 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95 sm:h-10 sm:w-fit sm:px-4"
                     >
                       View profile
                     </Link>
