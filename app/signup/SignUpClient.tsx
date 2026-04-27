@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Loader2, UserPlus } from "lucide-react";
+import { Eye, EyeOff, Loader2, UserPlus } from "lucide-react";
 import { createBrowserClient } from "@/lib/supabase/browser";
 import { authPrimaryButtonClassName } from "@/components/auth/authPrimaryButtonClassName";
 
@@ -17,6 +17,12 @@ export function SignUpClient() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmationSentTo, setConfirmationSentTo] = useState<string | null>(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,17 +30,8 @@ export function SignUpClient() {
     setConfirmationSentTo(null);
     setPending(true);
 
-    const fd = new FormData(e.currentTarget);
-    const full_name =
-      typeof fd.get("full_name") === "string" ? String(fd.get("full_name")).trim() : "";
-    const email =
-      typeof fd.get("email") === "string" ? String(fd.get("email")).trim() : "";
-    const password =
-      typeof fd.get("password") === "string" ? String(fd.get("password")) : "";
-    const passwordConfirm =
-      typeof fd.get("password_confirm") === "string"
-        ? String(fd.get("password_confirm"))
-        : "";
+    const full_name = fullName.trim();
+    const normalizedEmail = email.trim();
 
     if (password !== passwordConfirm) {
       setError("Passwords do not match.");
@@ -45,7 +42,7 @@ export function SignUpClient() {
     try {
       const supabase = createBrowserClient();
       const { data, error } = await supabase.auth.signUp({
-        email,
+        email: normalizedEmail,
         password,
         options: {
           data: { full_name },
@@ -57,7 +54,7 @@ export function SignUpClient() {
       }
       // If email confirmations are enabled, Supabase returns no session and sends a confirmation email.
       if (!data.session) {
-        setConfirmationSentTo(email);
+        setConfirmationSentTo(normalizedEmail);
         return;
       }
       // If confirmations are disabled, we get a session immediately—continue to dashboard.
@@ -70,6 +67,14 @@ export function SignUpClient() {
       setPending(false);
     }
   }
+
+  const canSubmit =
+    !pending &&
+    fullName.trim().length > 1 &&
+    email.trim().length > 3 &&
+    password.length >= 6 &&
+    passwordConfirm.length >= 6 &&
+    password === passwordConfirm;
 
   return (
     <div className="w-full max-w-md">
@@ -112,6 +117,8 @@ export function SignUpClient() {
               autoComplete="name"
               required
               className={inputClassName}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
             />
           </div>
 
@@ -126,6 +133,8 @@ export function SignUpClient() {
               autoComplete="email"
               required
               className={inputClassName}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -133,31 +142,64 @@ export function SignUpClient() {
             <label htmlFor="password" className={labelClassName}>
               Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              required
-              className={inputClassName}
-            />
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                required
+                className={`${inputClassName} pr-11`}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute inset-y-0 right-2 inline-flex w-9 items-center justify-center text-white/70 hover:text-white"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
 
           <div>
             <label htmlFor="password_confirm" className={labelClassName}>
               Confirm password
             </label>
-            <input
-              id="password_confirm"
-              name="password_confirm"
-              type="password"
-              autoComplete="new-password"
-              required
-              className={inputClassName}
-            />
+            <div className="relative">
+              <input
+                id="password_confirm"
+                name="password_confirm"
+                type={showPasswordConfirm ? "text" : "password"}
+                autoComplete="new-password"
+                required
+                className={`${inputClassName} pr-11`}
+                value={passwordConfirm}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasswordConfirm((v) => !v)}
+                className="absolute inset-y-0 right-2 inline-flex w-9 items-center justify-center text-white/70 hover:text-white"
+                aria-label={showPasswordConfirm ? "Hide confirm password" : "Show confirm password"}
+              >
+                {showPasswordConfirm ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           </div>
 
-          <button type="submit" className={authPrimaryButtonClassName} disabled={pending}>
+          <button
+            type="submit"
+            className={authPrimaryButtonClassName}
+            disabled={!canSubmit}
+            aria-disabled={!canSubmit}
+          >
             {pending ? (
               <span className="inline-flex items-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -167,6 +209,18 @@ export function SignUpClient() {
               "Create account"
             )}
           </button>
+
+          <p className="text-center text-xs text-white/70">
+            By signing up you agree to our{" "}
+            <Link href="/terms" className="text-white underline-offset-4 hover:underline">
+              Terms
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="text-white underline-offset-4 hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </p>
         </form>
       </div>
 

@@ -69,9 +69,9 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href="#trust" className="transition-colors hover:text-accent">
+                <Link href="/terms" className="transition-colors hover:text-accent">
                   Terms
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="transition-colors hover:text-accent">
@@ -79,9 +79,9 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href="#" className="transition-colors hover:text-accent">
+                <Link href="/privacy" className="transition-colors hover:text-accent">
                   Privacy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
