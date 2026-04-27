@@ -36,7 +36,7 @@ export async function GET(request: Request) {
   const { data, error } = await admin
     .from("affiliate_applications")
     .select(
-      "id,status,full_name,company_name,email,phone,postcode,years_experience,areas_covered,created_at,certification_paths,insurance_path,dbs_path",
+      "id,status,full_name,company_name,email,phone,postcode,years_experience,areas_covered,created_at,certification_paths,insurance_path,dbs_path,profile_photo_path",
     )
     .eq("user_id", userData.user.id)
     .order("created_at", { ascending: false })

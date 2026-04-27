@@ -1,14 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase/browser";
 import {
+  BarChart3,
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  ShieldCheck,
+  UserRound,
   Download,
   MapPin,
 } from "lucide-react";
 import { CompleteRegistrationDialog } from "./CompleteRegistrationDialog";
+import { ProfileDialog } from "./ProfileDialog";
 
 type Application = {
   id: string;
@@ -24,6 +32,7 @@ type Application = {
   certification_paths: unknown;
   insurance_path: string;
   dbs_path: string | null;
+  profile_photo_path?: string | null;
 };
 
 function toArray(v: unknown): string[] {
@@ -56,6 +65,8 @@ export default function DashboardPage() {
   const [app, setApp] = useState<Application | null>(null);
   const [downloading, setDownloading] = useState<string | null>(null);
   const [showRegister, setShowRegister] = useState(false);
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(null);
+  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -101,6 +112,52 @@ export default function DashboardPage() {
     };
   }, [router, supabase]);
 
+  useEffect(() => {
+    let cancelled = false;
+    async function loadPhoto() {
+      setProfilePhotoUrl(null);
+      if (!app?.profile_photo_path) return;
+      try {
+        const { data } = await supabase.auth.getSession();
+        const token = data.session?.access_token;
+        if (!token) return;
+        const res = await fetch("/api/me/application/doc-url", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ path: app.profile_photo_path }),
+        });
+        const json = (await res.json().catch(() => null)) as { url?: string } | null;
+        if (!cancelled && res.ok && json?.url) setProfilePhotoUrl(json.url);
+      } catch {
+        // ignore
+      }
+    }
+    void loadPhoto();
+    return () => {
+      cancelled = true;
+    };
+  }, [app?.profile_photo_path, supabase]);
+
+  async function refreshApplication() {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return;
+    const res = await fetch("/api/me/application", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const json = (await res.json().catch(() => null)) as
+      | { application: Application | null }
+      | { error: string }
+      | null;
+    if (res.ok && json && "application" in json) {
+      setApp(json.application);
+      setShowRegister(json.application == null);
+    }
+  }
+
   async function downloadDoc(path: string) {
     setDownloading(path);
     try {
@@ -133,38 +190,138 @@ export default function DashboardPage() {
     router.push("/signin");
   }
 
+  const certCount = app ? toArray(app.certification_paths).length : 0;
+  const docCount = app ? certCount + 1 + (app.dbs_path ? 1 : 0) : 0;
+
   return (
     <main className="relative min-h-dvh w-full overflow-hidden bg-black text-white">
-      <div className="container relative z-10 mx-auto px-4 py-10 sm:px-6 lg:py-14">
-        <header className="mx-auto max-w-5xl">
-          <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="relative z-10 mx-auto grid min-h-dvh max-w-7xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[260px_1fr] lg:gap-8 lg:px-8 lg:py-8">
+        <aside className="rounded-3xl border border-white/15 bg-white/8 p-5 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md lg:sticky lg:top-8 lg:self-start">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent-gradient shadow-accent-glow">
+              {profilePhotoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={profilePhotoUrl}
+                  alt=""
+                  className="h-full w-full rounded-2xl object-cover"
+                />
+              ) : (
+                <Image
+                  src="/logo-mark.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="h-5 w-5"
+                  priority
+                />
+              )}
+            </span>
             <div>
-              <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Affiliate dashboard
-              </h1>
-              <p className="mt-2 text-sm text-white/80">
-                Your application status, profile details, and documents.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={signOut}
-                className="inline-flex h-12 items-center justify-center rounded-2xl bg-accent-gradient px-6 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
-              >
-                Sign out
-              </button>
-              <Link
-                href="/"
-                className="inline-flex h-12 items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-6 text-sm font-semibold text-white hover:bg-white/10"
-              >
-                Back to home
-              </Link>
+              <p className="font-display text-lg font-extrabold leading-none">Dashboard</p>
+              <p className="mt-1 text-xs text-white/70">Affiliate</p>
             </div>
           </div>
-        </header>
 
-        <div className="mx-auto mt-8 max-w-5xl space-y-6">
+          <nav className="mt-6 space-y-2 text-sm">
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-white">
+              <LayoutDashboard className="h-4 w-4" />
+              Overview
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/90">
+              <ShieldCheck className="h-4 w-4" />
+              Status
+            </div>
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/90">
+              <FileText className="h-4 w-4" />
+              Documents
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowProfile(true)}
+              className="flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-white/90 hover:bg-white/10"
+            >
+              <UserRound className="h-4 w-4" />
+              Profile
+            </button>
+          </nav>
+
+          <div className="mt-6 border-t border-white/10 pt-6 space-y-3">
+            <button
+              type="button"
+              onClick={signOut}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-accent-gradient px-4 py-3 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+            <Link
+              href="/"
+              className="inline-flex w-full items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              Back to home
+            </Link>
+          </div>
+        </aside>
+
+        <section className="min-w-0">
+          <header className="rounded-3xl border border-white/15 bg-white/8 p-5 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h1 className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
+                  Affiliate dashboard
+                </h1>
+                <p className="mt-1 text-sm text-white/80">
+                  Your application status, profile details, and documents.
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="hidden sm:flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
+                  <BarChart3 className="h-4 w-4 text-white/60" />
+                  Overview
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-3xl border border-white/15 bg-white/8 p-5 backdrop-blur-md">
+              <p className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+                Status
+              </p>
+              <div className="mt-2">{app ? <span className={statusBadge(app.status)}>{app.status}</span> : <span className={statusBadge("pending")}>—</span>}</div>
+            </div>
+            <div className="rounded-3xl border border-white/15 bg-white/8 p-5 backdrop-blur-md">
+              <p className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+                Documents
+              </p>
+              <p className="mt-2 font-display text-3xl font-extrabold">{app ? docCount : "—"}</p>
+              <p className="mt-1 text-xs text-white/60">Certs, insurance, DBS</p>
+            </div>
+            <div className="rounded-3xl border border-white/15 bg-white/8 p-5 backdrop-blur-md">
+              <p className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+                Coverage
+              </p>
+              <p className="mt-2 text-sm text-white/90 line-clamp-2">{app ? app.areas_covered : "—"}</p>
+            </div>
+            <div className="rounded-3xl border border-white/15 bg-white/8 p-5 backdrop-blur-md">
+              <p className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+                Public profile
+              </p>
+              {app && (app.status === "approved" || app.status === "verified") ? (
+                <Link
+                  href={`/directory/${encodeURIComponent(app.id)}`}
+                  className="mt-3 inline-flex h-11 w-full items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 text-sm font-semibold text-white hover:bg-white/10"
+                >
+                  View profile
+                </Link>
+              ) : (
+                <p className="mt-2 text-sm text-white/70">Available after approval.</p>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-6 space-y-6">
             {pending ? (
               <div className="rounded-3xl border border-white/15 bg-white/8 p-7 backdrop-blur-md">
                 <p className="text-sm text-white/80">Loading…</p>
@@ -326,8 +483,17 @@ export default function DashboardPage() {
                 </button>
               </div>
             )}
-        </div>
+          </div>
+        </section>
       </div>
+      <ProfileDialog
+        open={showProfile}
+        onClose={() => setShowProfile(false)}
+        initial={{ company_name: app?.company_name, phone: app?.phone }}
+        onSaved={() => {
+          void refreshApplication();
+        }}
+      />
       <CompleteRegistrationDialog
         open={showRegister}
         onClose={() => setShowRegister(false)}

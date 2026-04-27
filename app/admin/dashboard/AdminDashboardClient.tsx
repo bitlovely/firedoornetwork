@@ -140,13 +140,23 @@ export function AdminDashboardClient() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            <button type="button" className={authPrimaryButtonClassName} onClick={signOut}>
+          <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2">
+            <button
+              type="button"
+              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-accent-gradient px-4 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
+              onClick={signOut}
+            >
               <span className="inline-flex items-center justify-center gap-2">
                 <LogOut className="h-4 w-4" />
                 Sign out
               </span>
             </button>
+            <Link
+              href="/"
+              className="inline-flex h-12 w-full items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+            >
+              Back to homepage
+            </Link>
           </div>
         </div>
 
@@ -212,30 +222,32 @@ export function AdminDashboardClient() {
               </p>
               <p className="text-xs text-white/60">{apps.length} shown</p>
             </div>
-            <div className="max-h-[70dvh] overflow-auto">
-              {apps.map((a) => (
-                <Link
-                  key={a.id}
-                  href={`/admin/dashboard/${encodeURIComponent(a.id)}`}
-                  className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 transition-colors hover:bg-white/10"
-                >
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-white">
-                      {a.full_name}
-                    </p>
-                    <p className="mt-1 truncate text-xs text-white/70">
-                      {a.company_name} · {a.postcode}
-                    </p>
-                    <p className="mt-1 truncate text-xs text-white/60">{a.email}</p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-3">
-                    <span className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs font-semibold text-white/90">
-                      {a.status}
-                    </span>
-                    <ChevronRight className="h-4 w-4 text-white/60" />
-                  </div>
-                </Link>
-              ))}
+            <div className="max-h-[70dvh] overflow-auto px-1 pb-1">
+              <div className="space-y-3">
+                {apps.map((a) => (
+                  <Link
+                    key={a.id}
+                    href={`/admin/dashboard/${encodeURIComponent(a.id)}`}
+                    className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 transition-colors hover:bg-white/10"
+                  >
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-white">
+                        {a.full_name}
+                      </p>
+                      <p className="mt-1 truncate text-xs text-white/70">
+                        {a.company_name} · {a.postcode}
+                      </p>
+                      <p className="mt-1 truncate text-xs text-white/60">{a.email}</p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-3">
+                      <span className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs font-semibold text-white/90">
+                        {a.status}
+                      </span>
+                      <ChevronRight className="h-4 w-4 text-white/60" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         )}

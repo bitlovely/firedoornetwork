@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2, Shield } from "lucide-react";
@@ -96,6 +97,11 @@ export function AdminSignInClient() {
             )}
           </button>
         </form>
+      </div>
+      <div className="mt-6 text-center text-xs text-white">
+        <Link href="/" className="underline-offset-4 hover:underline">
+          Back to home
+        </Link>
       </div>
     </div>
   );

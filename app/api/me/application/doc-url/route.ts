@@ -42,7 +42,7 @@ export async function POST(request: Request) {
   const admin = createAdminClient();
   const { data, error } = await admin
     .from("affiliate_applications")
-    .select("id,certification_paths,insurance_path,dbs_path")
+    .select("id,certification_paths,insurance_path,dbs_path,profile_photo_path,sample_report_paths")
     .eq("user_id", userData.user.id)
     .order("created_at", { ascending: false })
     .limit(1)
@@ -58,10 +58,15 @@ export async function POST(request: Request) {
   const certs = Array.isArray(data.certification_paths)
     ? (data.certification_paths.filter((v): v is string => typeof v === "string") as string[])
     : [];
+  const samples = Array.isArray(data.sample_report_paths)
+    ? (data.sample_report_paths.filter((v): v is string => typeof v === "string") as string[])
+    : [];
   const allowed = new Set<string>([
     ...certs,
+    ...samples,
     ...(typeof data.insurance_path === "string" ? [data.insurance_path] : []),
     ...(typeof data.dbs_path === "string" ? [data.dbs_path] : []),
+    ...(typeof data.profile_photo_path === "string" ? [data.profile_photo_path] : []),
   ]);
 
   if (!allowed.has(path)) {

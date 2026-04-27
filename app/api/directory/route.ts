@@ -22,7 +22,9 @@ export async function GET(request: Request) {
   const supabase = createAdminClient();
   let query = supabase
     .from("affiliate_applications")
-    .select("id,status,full_name,company_name,postcode,email,phone,created_at")
+    .select(
+      "id,status,full_name,company_name,postcode,email,phone,created_at,profile_photo_path,bio,services,areas_covered,years_experience,verified_insurance,verified_certification,identity_checked,review_count,review_rating,sample_report_paths",
+    )
     .in("status", ["approved", "verified"])
     .order("created_at", { ascending: false })
     .limit(200);

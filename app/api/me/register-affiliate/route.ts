@@ -13,6 +13,7 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const MAX_CERT_FILES = 8;
+const MAX_SAMPLE_REPORTS = 3;
 
 export async function POST(request: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -59,6 +60,8 @@ export async function POST(request: Request) {
       postcode: formData.get("postcode"),
       years_experience: formData.get("years_experience"),
       areas_covered: formData.get("areas_covered"),
+      bio: formData.get("bio"),
+      services: formData.get("services"),
     };
 
     const parsed = affiliateApplicationFieldSchema.safeParse({
@@ -77,11 +80,24 @@ export async function POST(request: Request) {
     }
     const fields = parsed.data;
 
+    const bio = typeof raw.bio === "string" ? raw.bio.trim() : "";
+    const services = typeof raw.services === "string" ? raw.services.trim() : "";
+    if (bio.length < 10) {
+      return NextResponse.json({ error: "Bio is required" }, { status: 400 });
+    }
+    if (services.length < 3) {
+      return NextResponse.json({ error: "Services is required" }, { status: 400 });
+    }
+
     const certEntries = formData
       .getAll("certifications")
       .filter((v): v is File => v instanceof File && v.size > 0);
     const insuranceEntry = formData.get("insurance");
     const dbsEntry = formData.get("dbs");
+    const photoEntry = formData.get("profile_photo");
+    const sampleEntries = formData
+      .getAll("sample_reports")
+      .filter((v): v is File => v instanceof File && v.size > 0);
 
     if (certEntries.length === 0) {
       return NextResponse.json(
@@ -118,6 +134,26 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: dbsCheck.message }, { status: 400 });
       }
       dbsFile = dbsEntry;
+    }
+
+    let photoFile: File | null = null;
+    if (photoEntry instanceof File && photoEntry.size > 0) {
+      const photoCheck = assertFileOk(photoEntry, "Photo / logo");
+      if (!photoCheck.ok) {
+        return NextResponse.json({ error: photoCheck.message }, { status: 400 });
+      }
+      photoFile = photoEntry;
+    }
+
+    if (sampleEntries.length > MAX_SAMPLE_REPORTS) {
+      return NextResponse.json(
+        { error: `At most ${MAX_SAMPLE_REPORTS} sample reports` },
+        { status: 400 },
+      );
+    }
+    for (let i = 0; i < sampleEntries.length; i++) {
+      const r = assertFileOk(sampleEntries[i], `Sample report ${i + 1}`);
+      if (!r.ok) return NextResponse.json({ error: r.message }, { status: 400 });
     }
 
     const supabase = createAdminClient();
@@ -167,6 +203,22 @@ export async function POST(request: Request) {
       await uploadOne(dbsFile, dbsPath);
     }
 
+    let profilePhotoPath: string | null = null;
+    if (photoFile) {
+      const name = sanitizeFilename(photoFile.name || "photo.webp");
+      profilePhotoPath = `${applicationId}/profile_${name}`;
+      await uploadOne(photoFile, profilePhotoPath);
+    }
+
+    const sampleReportPaths: string[] = [];
+    for (let i = 0; i < sampleEntries.length; i++) {
+      const file = sampleEntries[i];
+      const name = sanitizeFilename(file.name || `sample-${i}.pdf`);
+      const path = `${applicationId}/sample_${i}_${name}`;
+      await uploadOne(file, path);
+      sampleReportPaths.push(path);
+    }
+
     const { data: inserted, error: insertError } = await supabase
       .from("affiliate_applications")
       .insert({
@@ -182,6 +234,10 @@ export async function POST(request: Request) {
         certification_paths: certificationPaths,
         insurance_path: insurancePath,
         dbs_path: dbsPath,
+        bio,
+        services,
+        profile_photo_path: profilePhotoPath,
+        sample_report_paths: sampleReportPaths,
         status: "pending",
       })
       .select("id")

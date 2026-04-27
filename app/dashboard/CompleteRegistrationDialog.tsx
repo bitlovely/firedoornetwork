@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { X, Loader2, UploadCloud } from "lucide-react";
+import { X, Loader2, UploadCloud, Image as ImageIcon } from "lucide-react";
 import { createBrowserClient } from "@/lib/supabase/browser";
 
 type Props = {
@@ -32,21 +32,49 @@ export function CompleteRegistrationDialog({ open, onClose, onCompleted }: Props
         return;
       }
 
-      const fd = new FormData(e.currentTarget);
+      // Be resilient: in some environments `currentTarget` may not be an actual HTMLFormElement.
+      // Try to locate the nearest <form> from the event target.
+      const target = e.target;
+      const formEl =
+        e.currentTarget instanceof HTMLFormElement
+          ? e.currentTarget
+          : target instanceof HTMLFormElement
+            ? target
+            : target instanceof HTMLElement
+              ? target.closest("form")
+              : null;
+
+      if (!formEl) {
+        throw new Error("Form not found");
+      }
+
+      const fd = new FormData(formEl);
       const res = await fetch("/api/me/register-affiliate", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
       });
-      const json = (await res.json()) as { id?: string; error?: string };
+      const json = (await res.json().catch(() => null)) as
+        | { id?: string; error?: string }
+        | null;
       if (!res.ok) {
-        setError(json.error ?? "Submission failed");
+        setError(json?.error ?? `Submission failed (HTTP ${res.status})`);
+        return;
+      }
+      if (!json?.id) {
+        setError("Unexpected response — please try again.");
         return;
       }
       onCompleted();
       onClose();
-    } catch {
-      setError("Network error — please try again");
+    } catch (e) {
+      const msg =
+        e instanceof Error && e.message
+          ? e.message
+          : "Network error — please try again";
+      setError(
+        `${msg}. (If this persists, check server logs for /api/me/register-affiliate.)`,
+      );
     } finally {
       setPending(false);
     }
@@ -119,6 +147,34 @@ export function CompleteRegistrationDialog({ open, onClose, onCompleted }: Props
               </div>
             </div>
 
+            <div>
+              <label htmlFor="bio" className="text-sm font-medium text-white">
+                Bio <span className="text-accent">*</span>
+              </label>
+              <textarea
+                id="bio"
+                name="bio"
+                required
+                rows={4}
+                className={field}
+                placeholder="A short intro about you and your experience…"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="services" className="text-sm font-medium text-white">
+                Services <span className="text-accent">*</span>
+              </label>
+              <textarea
+                id="services"
+                name="services"
+                required
+                rows={3}
+                className={field}
+                placeholder="e.g. Fire door inspections, condition surveys, compliance reports…"
+              />
+            </div>
+
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="postcode" className="text-sm font-medium text-white">
@@ -178,6 +234,21 @@ export function CompleteRegistrationDialog({ open, onClose, onCompleted }: Props
 
               <div className="mt-4 space-y-4">
                 <div>
+                  <label htmlFor="profile_photo" className="text-sm font-medium text-white">
+                    Photo / logo (optional)
+                  </label>
+                  <input
+                    id="profile_photo"
+                    name="profile_photo"
+                    type="file"
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                    className={`${field} file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white`}
+                  />
+                  <p className="mt-2 text-xs text-white/60">
+                    Upload a logo or profile photo to show on your public page.
+                  </p>
+                </div>
+                <div>
                   <label htmlFor="certifications" className="text-sm font-medium text-white">
                     Certifications <span className="text-accent">*</span>
                   </label>
@@ -215,6 +286,22 @@ export function CompleteRegistrationDialog({ open, onClose, onCompleted }: Props
                     accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
                     className={`${field} file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white`}
                   />
+                </div>
+                <div>
+                  <label htmlFor="sample_reports" className="text-sm font-medium text-white">
+                    Sample reports (optional)
+                  </label>
+                  <input
+                    id="sample_reports"
+                    name="sample_reports"
+                    type="file"
+                    multiple
+                    accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
+                    className={`${field} file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white`}
+                  />
+                  <p className="mt-2 text-xs text-white/60">
+                    Upload 1–3 examples (redacted) to help clients trust your work.
+                  </p>
                 </div>
               </div>
             </div>
