@@ -7,16 +7,14 @@ import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase/browser";
 import {
   BarChart3,
-  FileText,
   LayoutDashboard,
   LogOut,
-  ShieldCheck,
   UserRound,
   Download,
   MapPin,
 } from "lucide-react";
 import { CompleteRegistrationDialog } from "./CompleteRegistrationDialog";
-import { ProfileDialog } from "./ProfileDialog";
+import { ProfilePanel } from "./ProfilePanel";
 
 type Application = {
   id: string;
@@ -66,7 +64,7 @@ export default function DashboardPage() {
   const [downloading, setDownloading] = useState<string | null>(null);
   const [showRegister, setShowRegister] = useState(false);
   const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(null);
-  const [showProfile, setShowProfile] = useState(false);
+  const [activeView, setActiveView] = useState<"overview" | "profile">("overview");
 
   useEffect(() => {
     let cancelled = false;
@@ -224,22 +222,26 @@ export default function DashboardPage() {
           </div>
 
           <nav className="mt-6 space-y-2 text-sm">
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-white">
-              <LayoutDashboard className="h-4 w-4" />
-              Overview
-            </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/90">
-              <ShieldCheck className="h-4 w-4" />
-              Status
-            </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white/90">
-              <FileText className="h-4 w-4" />
-              Documents
-            </div>
             <button
               type="button"
-              onClick={() => setShowProfile(true)}
-              className="flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-white/90 hover:bg-white/10"
+              onClick={() => setActiveView("overview")}
+              className={`flex w-full items-center gap-3 rounded-2xl border border-white/10 px-4 py-3 text-left ${
+                activeView === "overview"
+                  ? "bg-white/10 text-white"
+                  : "bg-white/5 text-white/90 hover:bg-white/10"
+              }`}
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Overview
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveView("profile")}
+              className={`flex w-full items-center gap-3 rounded-2xl border border-white/10 px-4 py-3 text-left ${
+                activeView === "profile"
+                  ? "bg-white/10 text-white"
+                  : "bg-white/5 text-white/90 hover:bg-white/10"
+              }`}
             >
               <UserRound className="h-4 w-4" />
               Profile
@@ -269,22 +271,26 @@ export default function DashboardPage() {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h1 className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-                  Affiliate dashboard
+                  {activeView === "profile" ? "Profile" : "Affiliate dashboard"}
                 </h1>
                 <p className="mt-1 text-sm text-white/80">
-                  Your application status, profile details, and documents.
+                  {activeView === "profile"
+                    ? "Manage your account details and company profile."
+                    : "Your application status, profile details, and documents."}
                 </p>
               </div>
               <div className="flex items-center gap-3">
                 <div className="hidden sm:flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
                   <BarChart3 className="h-4 w-4 text-white/60" />
-                  Overview
+                  {activeView === "profile" ? "Profile" : "Overview"}
                 </div>
               </div>
             </div>
           </header>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {activeView === "overview" ? (
+            <>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-3xl border border-white/15 bg-white/8 p-5 backdrop-blur-md">
               <p className="text-xs font-semibold tracking-wider text-white/60 uppercase">
                 Status
@@ -484,16 +490,19 @@ export default function DashboardPage() {
               </div>
             )}
           </div>
+            </>
+          ) : (
+            <div className="mt-6">
+              <ProfilePanel
+                initial={{ company_name: app?.company_name, phone: app?.phone }}
+                onSaved={() => {
+                  void refreshApplication();
+                }}
+              />
+            </div>
+          )}
         </section>
       </div>
-      <ProfileDialog
-        open={showProfile}
-        onClose={() => setShowProfile(false)}
-        initial={{ company_name: app?.company_name, phone: app?.phone }}
-        onSaved={() => {
-          void refreshApplication();
-        }}
-      />
       <CompleteRegistrationDialog
         open={showRegister}
         onClose={() => setShowRegister(false)}
