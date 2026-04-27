@@ -91,6 +91,13 @@ export function Header() {
                   </a>
                 ))}
                 <Link
+                  href="/signin"
+                  className="w-full rounded-lg border border-white/15 bg-white/5 py-3 text-center text-sm font-semibold text-primary-foreground transition-colors hover:bg-white/10"
+                  onClick={() => setOpen(false)}
+                >
+                  Sign in
+                </Link>
+                <Link
                   href="/signup"
                   className="w-full rounded-lg bg-accent-gradient py-3 text-center text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
                   onClick={() => setOpen(false)}
