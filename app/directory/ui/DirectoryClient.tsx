@@ -153,7 +153,7 @@ export function DirectoryClient() {
               <select
                 value={radius}
                 onChange={(e) => setRadius(e.target.value)}
-                className={`${field} [color-scheme:dark]`}
+                className={`${field} bg-black/60 [color-scheme:dark]`}
               >
                 <option value="5">5</option>
                 <option value="10">10</option>
