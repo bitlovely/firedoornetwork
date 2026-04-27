@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronRight, LogOut } from "lucide-react";
+import { ChevronRight, LogOut, Search } from "lucide-react";
 import { authPrimaryButtonClassName } from "@/components/auth/authPrimaryButtonClassName";
 
 type Application = {
@@ -38,6 +38,11 @@ export function AdminDashboardClient() {
   const [error, setError] = useState<string | null>(null);
   const [apps, setApps] = useState<Application[]>([]);
   const [saving, setSaving] = useState<Record<string, boolean>>({});
+  const [q, setQ] = useState("");
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | "pending" | "approved" | "verified" | "rejected"
+  >("all");
+  const [dateFilter, setDateFilter] = useState<"all" | "7d" | "30d" | "90d">("all");
 
   async function load() {
     setError(null);
@@ -126,6 +131,30 @@ export function AdminDashboardClient() {
     }
     window.open(json.url, "_blank", "noopener,noreferrer");
   }
+
+  const filtered = useMemo(() => {
+    const now = Date.now();
+    const minCreatedAt =
+      dateFilter === "7d"
+        ? now - 7 * 24 * 60 * 60 * 1000
+        : dateFilter === "30d"
+          ? now - 30 * 24 * 60 * 60 * 1000
+          : dateFilter === "90d"
+            ? now - 90 * 24 * 60 * 60 * 1000
+            : null;
+
+    const needle = q.trim().toLowerCase();
+    return apps.filter((a) => {
+      if (statusFilter !== "all" && a.status !== statusFilter) return false;
+      if (minCreatedAt != null) {
+        const t = Date.parse(a.created_at);
+        if (Number.isFinite(t) && t < minCreatedAt) return false;
+      }
+      if (!needle) return true;
+      const hay = `${a.full_name} ${a.company_name} ${a.email} ${a.postcode}`.toLowerCase();
+      return hay.includes(needle);
+    });
+  }, [apps, q, statusFilter, dateFilter]);
 
   return (
     <main className="min-h-dvh w-full bg-black text-white">
@@ -216,15 +245,71 @@ export function AdminDashboardClient() {
           </div>
         ) : (
           <div className="mt-10 rounded-3xl border border-white/15 bg-white/8 p-4 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md sm:p-5">
-            <div className="flex items-center justify-between px-3 py-2">
-              <p className="text-xs font-semibold tracking-wider text-white/70 uppercase">
-                Applications
-              </p>
-              <p className="text-xs text-white/60">{apps.length} shown</p>
+            <div className="px-3 py-2">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-xs font-semibold tracking-wider text-white/70 uppercase">
+                  Applications
+                </p>
+                <p className="text-xs text-white/60">{filtered.length} shown</p>
+              </div>
+
+              <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                <div className="sm:col-span-2">
+                  <label className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+                    Search
+                  </label>
+                  <div className="relative mt-2">
+                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
+                    <input
+                      value={q}
+                      onChange={(e) => setQ(e.target.value)}
+                      placeholder="Full name, company, email, postcode…"
+                      className="h-11 w-full rounded-2xl border border-white/15 bg-white/5 pl-10 pr-4 text-sm text-white placeholder:text-white/40 outline-none transition-colors focus:border-white/35 focus:ring-2 focus:ring-white/20"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+                    Status
+                  </label>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) =>
+                      setStatusFilter(
+                        e.target.value as typeof statusFilter,
+                      )
+                    }
+                    className="mt-2 h-11 w-full rounded-2xl border border-white/15 bg-white/5 px-4 text-sm text-white outline-none transition-colors focus:border-white/35 focus:ring-2 focus:ring-white/20 [color-scheme:dark]"
+                  >
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="verified">Verified</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+                    Submitted
+                  </label>
+                  <select
+                    value={dateFilter}
+                    onChange={(e) => setDateFilter(e.target.value as typeof dateFilter)}
+                    className="mt-2 h-11 w-full rounded-2xl border border-white/15 bg-white/5 px-4 text-sm text-white outline-none transition-colors focus:border-white/35 focus:ring-2 focus:ring-white/20 [color-scheme:dark]"
+                  >
+                    <option value="all">All time</option>
+                    <option value="7d">Last 7 days</option>
+                    <option value="30d">Last 30 days</option>
+                    <option value="90d">Last 90 days</option>
+                  </select>
+                </div>
+              </div>
             </div>
             <div className="max-h-[70dvh] overflow-auto px-1 pb-1">
               <div className="space-y-3">
-                {apps.map((a) => (
+                {filtered.map((a) => (
                   <Link
                     key={a.id}
                     href={`/admin/dashboard/${encodeURIComponent(a.id)}`}

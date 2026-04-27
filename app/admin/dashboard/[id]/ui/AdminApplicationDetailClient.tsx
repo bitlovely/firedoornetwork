@@ -55,6 +55,7 @@ export function AdminApplicationDetailClient() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [app, setApp] = useState<Application | null>(null);
+  const allowDocVerify = app?.status === "approved" || app?.status === "verified";
 
   async function load() {
     setError(null);
@@ -264,7 +265,7 @@ export function AdminApplicationDetailClient() {
                             </button>
                             <button
                               type="button"
-                              disabled={saving}
+                              disabled={saving || !allowDocVerify}
                               onClick={() =>
                                 patch({ verified_certification: !app.verified_certification })
                               }
@@ -295,7 +296,7 @@ export function AdminApplicationDetailClient() {
                             </button>
                             <button
                               type="button"
-                              disabled={saving}
+                              disabled={saving || !allowDocVerify}
                               onClick={() => patch({ verified_insurance: !app.verified_insurance })}
                               className="inline-flex h-9 items-center justify-center rounded-lg bg-accent-gradient px-3 text-xs font-semibold text-accent-foreground shadow-accent-glow hover:opacity-95 disabled:opacity-60"
                             >
@@ -325,7 +326,7 @@ export function AdminApplicationDetailClient() {
                               </button>
                               <button
                                 type="button"
-                                disabled={saving}
+                                disabled={saving || !allowDocVerify}
                                 onClick={() => patch({ identity_checked: !app.identity_checked })}
                                 className="inline-flex h-9 items-center justify-center rounded-lg bg-accent-gradient px-3 text-xs font-semibold text-accent-foreground shadow-accent-glow hover:opacity-95 disabled:opacity-60"
                               >

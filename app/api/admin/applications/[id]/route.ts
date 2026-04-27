@@ -75,16 +75,64 @@ export async function PATCH(
   const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
   if (typeof status === "string") patch.status = status;
   if (typeof internal_notes === "string") patch.internal_notes = internal_notes;
-  if (typeof verified_insurance === "boolean") patch.verified_insurance = verified_insurance;
-  if (typeof verified_certification === "boolean")
-    patch.verified_certification = verified_certification;
-  if (typeof identity_checked === "boolean") patch.identity_checked = identity_checked;
+  const isDocVerificationPatch =
+    typeof verified_insurance === "boolean" ||
+    typeof verified_certification === "boolean" ||
+    typeof identity_checked === "boolean";
 
   if (status === "approved" || status === "rejected" || status === "verified") {
     patch.reviewed_at = new Date().toISOString();
   }
 
   const supabase = createAdminClient();
+  if (isDocVerificationPatch) {
+    const { data: current, error: currentErr } = await supabase
+      .from("affiliate_applications")
+      .select("status,verified_insurance,verified_certification,identity_checked")
+      .eq("id", id)
+      .single();
+    if (currentErr) {
+      return NextResponse.json({ error: currentErr.message }, { status: 500 });
+    }
+
+    // Only allow verifying documents after approval.
+    if (!(current.status === "approved" || current.status === "verified")) {
+      return NextResponse.json(
+        { error: "You can only verify documents after approving the application." },
+        { status: 403 },
+      );
+    }
+
+    const nextVerifiedInsurance =
+      typeof verified_insurance === "boolean"
+        ? verified_insurance
+        : Boolean(current.verified_insurance);
+    const nextVerifiedCertification =
+      typeof verified_certification === "boolean"
+        ? verified_certification
+        : Boolean(current.verified_certification);
+    const nextIdentityChecked =
+      typeof identity_checked === "boolean" ? identity_checked : Boolean(current.identity_checked);
+
+    if (typeof verified_insurance === "boolean") patch.verified_insurance = verified_insurance;
+    if (typeof verified_certification === "boolean")
+      patch.verified_certification = verified_certification;
+    if (typeof identity_checked === "boolean") patch.identity_checked = identity_checked;
+
+    const allVerified =
+      nextVerifiedInsurance && nextVerifiedCertification && nextIdentityChecked;
+
+    // Auto-promote to verified when all checks are complete.
+    if (allVerified) {
+      patch.status = "verified";
+      patch.reviewed_at = new Date().toISOString();
+    } else if (current.status === "verified") {
+      // If any verification is removed, fall back to approved.
+      patch.status = "approved";
+      patch.reviewed_at = new Date().toISOString();
+    }
+  }
+
   const { data, error } = await supabase
     .from("affiliate_applications")
     .update(patch)
