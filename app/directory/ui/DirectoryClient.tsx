@@ -73,6 +73,9 @@ export function DirectoryClient() {
   const field =
     "mt-2 h-11 w-full rounded-2xl border border-white/15 bg-white/5 px-4 text-sm text-white placeholder:text-white/50 outline-none transition-colors focus:border-white/35 focus:ring-2 focus:ring-white/20";
 
+  /** Native `<select>`: match filter inputs; dark option list where browsers allow. */
+  const selectField = `${field} [color-scheme:dark] [&>option]:bg-black [&>option]:text-white`;
+
   return (
     <div className="mx-auto max-w-6xl">
       <header className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -95,7 +98,7 @@ export function DirectoryClient() {
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[320px_1fr]">
         <aside
-          className={`rounded-3xl border border-white/15 bg-white/8 p-6 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md lg:sticky lg:top-28 lg:self-start ${
+          className={`[color-scheme:dark] rounded-3xl border border-white/15 bg-white/8 p-6 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md lg:sticky lg:top-28 lg:self-start ${
             mobileFiltersOpen ? "block" : "hidden lg:block"
           }`}
         >
@@ -153,7 +156,7 @@ export function DirectoryClient() {
               <select
                 value={radius}
                 onChange={(e) => setRadius(e.target.value)}
-                className={`${field} bg-black/60 [color-scheme:dark]`}
+                className={selectField}
               >
                 <option value="5">5</option>
                 <option value="10">10</option>
