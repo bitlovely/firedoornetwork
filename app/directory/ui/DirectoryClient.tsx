@@ -30,8 +30,8 @@ function initialsFromName(fullName: string) {
 function badge(status: string) {
   if (status !== "verified") return null;
   return (
-    <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2 py-0.5 text-[11px] font-semibold text-cyan-200 sm:px-2.5 sm:py-1 sm:text-xs">
-      <ShieldCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+    <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-600/25 bg-emerald-600/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-800 sm:px-2.5 sm:py-1 sm:text-xs">
+      <ShieldCheck className="h-3 w-3 text-emerald-700 sm:h-3.5 sm:w-3.5" />
       Verified Affiliate
     </span>
   );
@@ -82,10 +82,10 @@ export function DirectoryClient() {
   }, [params]);
 
   const field =
-    "mt-2 h-11 w-full rounded-2xl border border-white/15 bg-white/5 px-4 text-sm text-white placeholder:text-white/50 outline-none transition-colors focus:border-white/35 focus:ring-2 focus:ring-white/20";
+    "mt-2 h-11 w-full rounded-2xl border border-black/10 bg-white px-4 text-sm text-black placeholder:text-black/40 outline-none transition-colors focus:border-accent/60 focus:ring-2 focus:ring-accent/20";
 
-  /** Native `<select>`: match filter inputs; dark option list where browsers allow. */
-  const selectField = `${field} [color-scheme:dark] [&>option]:bg-black [&>option]:text-white`;
+  /** Native `<select>`: match filter inputs. */
+  const selectField = field;
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -94,13 +94,13 @@ export function DirectoryClient() {
           <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
             Public directory
           </h1>
-          <p className="mt-2 text-sm text-white/80">Search approved and verified affiliates.</p>
+          <p className="mt-2 text-sm text-black/70">Search approved and verified affiliates.</p>
         </div>
 
         <button
           type="button"
           onClick={() => setMobileFiltersOpen((v) => !v)}
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-4 text-sm font-semibold text-white hover:bg-white/10 lg:hidden"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl border border-black/10 bg-white px-4 text-sm font-semibold text-black transition-colors hover:bg-black/5 lg:hidden"
         >
           <Filter className="h-4 w-4" />
           Filters
@@ -109,12 +109,12 @@ export function DirectoryClient() {
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[320px_1fr]">
         <aside
-          className={`[color-scheme:dark] rounded-3xl border border-white/15 bg-white/8 p-6 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md lg:sticky lg:top-28 lg:self-start ${
+          className={`rounded-3xl border border-black/10 bg-white p-6 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.25)] lg:sticky lg:top-28 lg:self-start ${
             mobileFiltersOpen ? "block" : "hidden lg:block"
           }`}
         >
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold tracking-wider text-white/70 uppercase">
+            <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
               Filters
             </p>
             <button
@@ -126,7 +126,7 @@ export function DirectoryClient() {
                 setPostcode("");
                 setRadius("10");
               }}
-              className="text-xs font-semibold text-white/70 underline-offset-4 hover:underline"
+              className="text-xs font-semibold text-black/60 underline-offset-4 hover:underline"
             >
               Reset
             </button>
@@ -134,11 +134,11 @@ export function DirectoryClient() {
 
           <div className="mt-5 space-y-4">
             <div>
-              <label className="text-xs font-semibold tracking-wider text-white uppercase">
+              <label className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Search
               </label>
               <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60" />
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-black/45" />
                 <input
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
@@ -149,7 +149,7 @@ export function DirectoryClient() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold tracking-wider text-white uppercase">
+              <label className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Postcode
               </label>
               <input
@@ -161,7 +161,7 @@ export function DirectoryClient() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold tracking-wider text-white uppercase">
+              <label className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Radius (miles)
               </label>
               <select
@@ -178,7 +178,7 @@ export function DirectoryClient() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold tracking-wider text-white uppercase">
+              <label className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Name
               </label>
               <input
@@ -190,7 +190,7 @@ export function DirectoryClient() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold tracking-wider text-white uppercase">
+              <label className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Company
               </label>
               <input
@@ -205,8 +205,8 @@ export function DirectoryClient() {
 
         <section className="min-w-0">
         {pending ? (
-          <div className="rounded-3xl border border-white/15 bg-white/8 p-7 backdrop-blur-md">
-            <p className="text-sm text-white/80">Loading…</p>
+          <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.22)]">
+            <p className="text-sm text-black/60">Loading…</p>
           </div>
         ) : error ? (
           <div
@@ -216,20 +216,20 @@ export function DirectoryClient() {
             {error}
           </div>
         ) : items.length === 0 ? (
-          <div className="rounded-3xl border border-white/15 bg-white/8 p-7 backdrop-blur-md">
-            <p className="text-sm text-white/80">No affiliates found.</p>
+          <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.22)]">
+            <p className="text-sm text-black/60">No affiliates found.</p>
           </div>
         ) : (
           <div className="grid gap-4">
             {items.map((a) => (
               <article
                 key={a.id}
-                className="rounded-3xl border border-white/15 bg-white/8 p-6 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.75)] backdrop-blur-md"
+                className="rounded-3xl border border-black/10 bg-white p-6 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.22)]"
               >
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-6">
                   <div className="min-w-0">
                     <div className="flex items-start gap-3 sm:gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white/8 text-xs font-semibold text-white/80">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-black/10 bg-black/5 text-xs font-semibold text-black/70">
                         {a.profile_photo_path ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
@@ -248,13 +248,13 @@ export function DirectoryClient() {
                           </h2>
                           {badge(a.status)}
                         </div>
-                        <p className="mt-1 break-words text-sm text-white/80">{a.company_name}</p>
-                        <p className="mt-2 inline-flex items-center gap-2 text-sm text-white/90">
-                          <MapPin className="h-4 w-4 shrink-0 text-white/70" />
+                        <p className="mt-1 break-words text-sm text-black/70">{a.company_name}</p>
+                        <p className="mt-2 inline-flex items-center gap-2 text-sm text-black/80">
+                          <MapPin className="h-4 w-4 shrink-0 text-black/50" />
                           {a.postcode}
                         </p>
                         {a.bio?.trim() ? (
-                          <p className="mt-4 text-sm leading-relaxed text-white/75 line-clamp-5">
+                          <p className="mt-4 text-sm leading-relaxed text-black/70 line-clamp-5">
                             {a.bio.trim()}
                           </p>
                         ) : null}
@@ -273,7 +273,7 @@ export function DirectoryClient() {
                 </div>
 
                 {a.contact_enabled && a.email ? (
-                  <div className="mt-4 flex justify-end border-t border-white/10 pt-4">
+                  <div className="mt-4 flex justify-end border-t border-black/10 pt-4">
                     <a
                       href={`mailto:${encodeURIComponent(a.email)}`}
                       className="inline-flex h-10 w-fit items-center justify-center rounded-2xl bg-accent-gradient px-5 text-sm font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"

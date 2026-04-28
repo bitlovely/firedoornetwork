@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Application received — FireDoor Network",
-  description: "Thank you for applying to FireDoor Network.",
+  title: "Application received — FireDoor Inspection Network",
+  description: "Thank you for applying to FireDoor Inspection Network.",
 };
 
 type Props = { searchParams: Promise<{ id?: string }> };

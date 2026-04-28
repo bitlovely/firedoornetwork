@@ -3,8 +3,8 @@ import Image from "next/image";
 import { SignUpClient } from "./SignUpClient";
 
 export const metadata: Metadata = {
-  title: "Sign up — FireDoor Network",
-  description: "Create your FireDoor Network affiliate account.",
+  title: "Sign up — FireDoor Inspection Network",
+  description: "Create your FireDoor Inspection Network affiliate account.",
 };
 
 export default function SignUpPage() {

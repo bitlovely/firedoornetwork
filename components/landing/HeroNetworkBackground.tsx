@@ -143,19 +143,7 @@ export function HeroNetworkBackground() {
           </g>
         ) : null}
 
-        {/* message: reinforces meaning without being loud */}
-        <g opacity="0.14">
-          <text
-            fill="white"
-            fontSize="3.1"
-            fontFamily="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
-            letterSpacing="0.35"
-          >
-            <textPath href={`#headline-${uid}`} startOffset="0%">
-              Fire door pros → network → work • Fire door pros → network → work •
-            </textPath>
-          </text>
-        </g>
+        {/* background tagline removed per design */}
       </svg>
 
       {/* subtle background glow drift */}

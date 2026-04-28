@@ -141,7 +141,7 @@ export function LandingPage() {
               </Link>
               <Link
                 href="/directory"
-                className="inline-flex h-14 items-center justify-center rounded-lg border border-white/20 bg-transparent px-8 text-base font-semibold text-white transition-colors hover:bg-white/10"
+                className="inline-flex h-14 items-center justify-center rounded-lg bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
               >
                 Browse the directory
               </Link>
@@ -324,15 +324,13 @@ export function LandingPage() {
                 approve, we vouch. That&apos;s why clients pick names from our
                 directory.
               </p>
-              <div className="mt-8 inline-flex items-center gap-3 rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur-md">
-                <ShieldCheck className="h-6 w-6 text-white" strokeWidth={2.5} />
+              <div className="mt-8 mx-auto inline-flex items-center gap-3 rounded-2xl bg-accent-gradient px-6 py-4 text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95 ring-1 ring-white/10 backdrop-blur-md lg:mx-0">
+                <ShieldCheck className="h-6 w-6" strokeWidth={2.5} />
                 <div>
-                  <div className="text-xs font-semibold tracking-wider text-white uppercase">
-                    FireDoor Network
+                  <div className="text-xs font-semibold tracking-wider uppercase text-accent-foreground/90">
+                    FireDoor Inspection Network
                   </div>
-                  <div className="font-display text-lg font-bold text-white">
-                    Verified Affiliate
-                  </div>
+                  <div className="font-display text-lg font-bold">Verified Affiliate</div>
                 </div>
               </div>
             </div>
@@ -345,7 +343,7 @@ export function LandingPage() {
                     className="flex gap-5 rounded-xl border border-white/20 bg-white/8 p-6 backdrop-blur-md transition-all hover:border-white/30 hover:bg-white/12"
                   >
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white ring-1 ring-white/20">
-                      <Icon className="h-5 w-5 text-white/80" strokeWidth={2.25} />
+                      <Icon className="h-5 w-5 text-accent" strokeWidth={2.25} />
                     </div>
                     <div>
                       <h3 className="font-display text-lg font-bold">
@@ -385,7 +383,7 @@ export function LandingPage() {
                 </Link>
                 <a
                   href="#"
-                  className="inline-flex h-14 items-center justify-center rounded-lg border border-white/20 px-8 text-base font-semibold text-white transition-colors hover:bg-white/10"
+                  className="inline-flex h-14 items-center justify-center rounded-lg bg-accent-gradient px-8 text-base font-semibold text-accent-foreground shadow-accent-glow transition-opacity hover:opacity-95"
                 >
                   Talk to the team
                 </a>
