@@ -429,7 +429,7 @@ export default function DashboardPage() {
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
-                        Public profile
+                        Profile
                       </p>
                       {app && (app.status === "approved" || app.status === "verified") ? (
                         <Link
@@ -472,14 +472,6 @@ export default function DashboardPage() {
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-3">
                         <span className={statusBadge(app.status)}>{app.status}</span>
-                        {(app.status === "approved" || app.status === "verified") && (
-                          <Link
-                            href={`/directory?profile=${encodeURIComponent(app.id)}`}
-                            className="text-sm text-black underline-offset-4 hover:underline"
-                          >
-                            View public profile
-                          </Link>
-                        )}
                       </div>
                     </div>
                     <div className="text-right">
