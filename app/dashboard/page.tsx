@@ -16,6 +16,8 @@ import {
   Download,
   MapPin,
 } from "lucide-react";
+import { Header } from "@/components/landing/Header";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { CompleteRegistrationDialog } from "./CompleteRegistrationDialog";
 import { ProfilePanel } from "./ProfilePanel";
 import { SubscriptionPanel } from "./SubscriptionPanel";
@@ -239,8 +241,9 @@ export default function DashboardPage() {
   const docCount = app ? certCount + 1 + (app.dbs_path ? 1 : 0) : 0;
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#f3f4f6] text-black">
-      <div className="relative z-10 mx-auto grid min-h-dvh max-w-7xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[260px_1fr] lg:gap-8 lg:px-8 lg:py-8">
+    <main className="relative min-h-dvh w-full bg-[#f3f4f6] text-black">
+      <Header />
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-6 px-4 pt-24 pb-10 sm:px-6 sm:pt-28 lg:grid-cols-[260px_1fr] lg:gap-8 lg:px-8 lg:pt-28 lg:pb-14">
         <aside className="rounded-3xl border border-black/10 bg-white p-5 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.18)] lg:sticky lg:top-8 lg:self-start">
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent-gradient shadow-accent-glow">
@@ -607,6 +610,7 @@ export default function DashboardPage() {
           window.location.reload();
         }}
       />
+      <SiteFooter />
     </main>
   );
 }
