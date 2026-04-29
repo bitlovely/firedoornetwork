@@ -22,11 +22,21 @@ type Application = {
   insurance_path: string;
   dbs_path: string | null;
   internal_notes: string | null;
+  profile_photo_url?: string | null;
 };
 
 function toArray(v: unknown): string[] {
   if (Array.isArray(v)) return v.filter((x): x is string => typeof x === "string");
   return [];
+}
+
+function initialsFromName(fullName: string) {
+  return fullName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((s) => s[0]?.toUpperCase())
+    .join("");
 }
 
 function countBy(apps: Application[], status: string) {
@@ -342,14 +352,26 @@ export function AdminDashboardClient() {
                     onClick={() => openDrawer(a.id)}
                     className="flex w-full items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-left transition-colors hover:bg-white/10"
                   >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-white">
-                        {a.full_name}
-                      </p>
-                      <p className="mt-1 truncate text-xs text-white/70">
-                        {a.company_name} · {a.postcode}
-                      </p>
-                      <p className="mt-1 truncate text-xs text-white/60">{a.email}</p>
+                    <div className="min-w-0 flex items-center gap-3">
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white/8 text-xs font-semibold text-white/80">
+                        {a.profile_photo_url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={a.profile_photo_url}
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          initialsFromName(a.full_name) || "—"
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-white">{a.full_name}</p>
+                        <p className="mt-1 truncate text-xs text-white/70">
+                          {a.company_name} · {a.postcode}
+                        </p>
+                        <p className="mt-1 truncate text-xs text-white/60">{a.email}</p>
+                      </div>
                     </div>
                     <div className="flex shrink-0 items-center gap-3">
                       <span className="rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs font-semibold text-white/90">
