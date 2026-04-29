@@ -394,14 +394,8 @@ export function DirectoryClient() {
             <div className="flex h-16 items-center justify-between border-b border-black/10 px-5">
               <div className="flex items-center gap-2">
                 <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-gradient shadow-accent-glow">
-                  <Image
-                    src="/logo-mark.svg"
-                    alt=""
-                    width={20}
-                    height={20}
-                    className="h-5 w-5"
-                    priority
-                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/logo-mark.svg" alt="" className="h-5 w-5" />
                 </span>
                 <div className="font-display text-sm font-bold leading-tight">
                   FireDoor <span className="text-accent">Inspection</span> Network
