@@ -267,7 +267,7 @@ export default function DashboardPage() {
             </span>
             <div>
               <p className="font-display text-lg font-extrabold leading-none">Dashboard</p>
-              <p className="mt-1 text-xs text-black/60">Affiliate</p>
+              <p className="mt-1 text-xs text-black/70">Affiliate</p>
             </div>
           </div>
 
@@ -348,8 +348,8 @@ export default function DashboardPage() {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="hidden sm:flex items-center gap-2 rounded-2xl border border-black/10 bg-black/5 px-4 py-2 text-sm text-black/70">
-                  <BarChart3 className="h-4 w-4 text-black/50" />
+                <div className="hidden sm:flex items-center gap-2 rounded-2xl border border-black/10 bg-black/5 px-4 py-2 text-sm text-black/75">
+                  <BarChart3 className="h-4 w-4 text-black/60" />
                   {activeView === "profile"
                     ? "Profile"
                     : activeView === "subscription"
@@ -364,26 +364,26 @@ export default function DashboardPage() {
             <>
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
-              <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+              <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Status
               </p>
               <div className="mt-2">{app ? <span className={statusBadge(app.status)}>{app.status}</span> : <span className={statusBadge("pending")}>—</span>}</div>
             </div>
             <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
-              <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+              <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Documents
               </p>
               <p className="mt-2 font-display text-3xl font-extrabold">{app ? docCount : "—"}</p>
-              <p className="mt-1 text-xs text-black/60">Certs, insurance, DBS</p>
+              <p className="mt-1 text-xs text-black/70">Certs, insurance, DBS</p>
             </div>
             <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
-              <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+              <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Coverage
               </p>
               <p className="mt-2 text-sm text-black/80 line-clamp-2">{app ? app.areas_covered : "—"}</p>
             </div>
             <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
-              <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+              <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                 Public profile
               </p>
               {app && (app.status === "approved" || app.status === "verified") ? (
@@ -394,7 +394,7 @@ export default function DashboardPage() {
                   View profile
                 </Link>
               ) : (
-                <p className="mt-2 text-sm text-black/60">Available after approval.</p>
+                <p className="mt-2 text-sm text-black/70">Available after approval.</p>
               )}
             </div>
           </div>
@@ -402,7 +402,7 @@ export default function DashboardPage() {
           <div className="mt-6 space-y-6">
             {pending ? (
               <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-sm">
-                <p className="text-sm text-black/60">Loading…</p>
+                <p className="text-sm text-black/70">Loading…</p>
               </div>
             ) : error ? (
               <div
@@ -418,7 +418,7 @@ export default function DashboardPage() {
                 >
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                    <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Status
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-3">
@@ -434,49 +434,49 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Application ID
                       </p>
-                      <p className="mt-2 font-mono text-xs text-black/60">{app.id}</p>
+                      <p className="mt-2 font-mono text-xs text-black/70">{app.id}</p>
                     </div>
                   </div>
 
                   <div className="mt-8 grid gap-4 sm:grid-cols-2">
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Name
                       </p>
                       <p className="mt-1 text-sm text-black/80">{app.full_name}</p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Company
                       </p>
                       <p className="mt-1 text-sm text-black/80">{app.company_name}</p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Email
                       </p>
                       <p className="mt-1 text-sm text-black/80">{app.email}</p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Phone
                       </p>
                       <p className="mt-1 text-sm text-black/80">{app.phone}</p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Location
                       </p>
                       <p className="mt-1 inline-flex items-center gap-2 text-sm text-black/80">
-                        <MapPin className="h-4 w-4 text-black/50" />
+                        <MapPin className="h-4 w-4 text-black/60" />
                         {app.postcode}
                       </p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Experience
                       </p>
                       <p className="mt-1 text-sm text-black/80">{app.years_experience} years</p>
@@ -484,7 +484,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="mt-6 rounded-2xl border border-black/10 bg-black/5 p-4">
-                    <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                    <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                       Coverage area
                     </p>
                     <p className="mt-2 whitespace-pre-wrap text-sm text-black/80">
@@ -498,7 +498,7 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
                         Documents
                       </p>
                       <p className="mt-1 text-sm text-black/70">
@@ -560,7 +560,7 @@ export default function DashboardPage() {
                     ) : null}
                   </div>
 
-                  <div className="mt-5 rounded-2xl border border-black/10 bg-black/5 p-4 text-xs text-black/60">
+                  <div className="mt-5 rounded-2xl border border-black/10 bg-black/5 p-4 text-xs text-black/70">
                     Downloads are secure links that expire quickly.
                   </div>
                 </section>
