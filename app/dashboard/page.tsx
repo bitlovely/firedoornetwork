@@ -243,7 +243,7 @@ export default function DashboardPage() {
   return (
     <main className="relative min-h-dvh w-full bg-[#f3f4f6] text-black">
       <Header />
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-6 px-4 pt-24 pb-10 sm:px-6 sm:pt-28 lg:grid-cols-[240px_1fr] lg:gap-6 lg:px-4 lg:pt-28 lg:pb-14">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-6 px-4 pt-24 pb-10 sm:px-6 sm:pt-28 lg:grid-cols-[240px_1fr] lg:gap-6 lg:px-10 lg:pt-28 lg:pb-14 2xl:max-w-[1400px]">
         <aside className="rounded-3xl border border-black/10 bg-white p-5 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.18)] lg:sticky lg:top-8 lg:self-start">
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent-gradient shadow-accent-glow">
