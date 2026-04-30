@@ -29,9 +29,11 @@ export function SubscriptionPanel({
     : null;
 
   const planCardBase = "rounded-2xl bg-black/5 p-4 transition-colors";
+  const planCardAdvancedTint = "!bg-accent/50 text-black";
   const planCardActive =
     "border-2 border-accent/70 shadow-[0_0_0_1px_rgba(239,68,68,0.25),0_18px_50px_-28px_rgba(239,68,68,0.45)]";
   const planCardIdle = "border border-black/10";
+  const planCardAdvancedIdle = "border border-accent/70";
 
   async function startCheckout() {
     setError(null);
@@ -108,8 +110,10 @@ export function SubscriptionPanel({
                 Limited directory visibility. Contact details are not shown publicly.
               </p>
             </div>
-            <div className={`${planCardBase} ${isAdvanced ? planCardActive : planCardIdle}`}>
-              <p className="text-xs font-semibold tracking-wider text-black uppercase">
+            <div
+              className={`${planCardBase} ${planCardAdvancedTint} ${isAdvanced ? planCardActive : planCardAdvancedIdle}`}
+            >
+              <p className="text-xs font-semibold tracking-wider uppercase text-black">
                 Advanced
               </p>
               <p className="mt-2 font-display text-2xl font-extrabold">£9 / month</p>
@@ -117,6 +121,20 @@ export function SubscriptionPanel({
                 <ShieldCheck className="h-4 w-4 text-black" />
                 {isAdvanced ? "Active" : isAdvancedInactive ? "Inactive" : "Not subscribed"}
               </p>
+              <ul className="mt-3 space-y-1 text-xs text-black">
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-black/70" />
+                  Your email/phone can be shown to clients (directory contact unlocked).
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-black/70" />
+                  “Request inspection” button enabled on your public profile.
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-black/70" />
+                  Better visibility in search results (Advanced badge).
+                </li>
+              </ul>
               {isAdvanced && renewal ? (
                 <p className="mt-2 text-xs text-black">
                   Renews on {renewal.toLocaleDateString()}
