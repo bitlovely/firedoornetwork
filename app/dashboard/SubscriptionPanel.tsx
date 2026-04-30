@@ -85,45 +85,45 @@ export function SubscriptionPanel({
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="font-display text-xl font-extrabold tracking-tight">Subscription</h2>
-          <p className="mt-1 text-sm text-black/70">
+          <p className="mt-1 text-sm text-black">
             Upgrade to Advanced for full visibility and contact access.
           </p>
         </div>
         <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-black/10 bg-black/5">
-          <CreditCard className="h-5 w-5 text-black/70" />
+          <CreditCard className="h-5 w-5 text-black" />
         </div>
       </div>
 
       {!app ? (
-        <div className="mt-6 rounded-2xl border border-black/10 bg-black/5 p-5 text-sm text-black/70">
+        <div className="mt-6 rounded-2xl border border-black/10 bg-black/5 p-5 text-sm text-black">
           Complete registration first to manage your plan.
         </div>
       ) : (
         <>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <div className={`${planCardBase} ${!isAdvanced ? planCardActive : planCardIdle}`}>
-              <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">Basic</p>
+              <p className="text-xs font-semibold tracking-wider text-black uppercase">Basic</p>
               <p className="mt-2 font-display text-2xl font-extrabold">Standard</p>
-              <p className="mt-2 text-xs text-black/70">
+              <p className="mt-2 text-xs text-black">
                 Limited directory visibility. Contact details are not shown publicly.
               </p>
             </div>
             <div className={`${planCardBase} ${isAdvanced ? planCardActive : planCardIdle}`}>
-              <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+              <p className="text-xs font-semibold tracking-wider text-black uppercase">
                 Advanced
               </p>
               <p className="mt-2 font-display text-2xl font-extrabold">£9 / month</p>
-              <p className="mt-2 inline-flex items-center gap-2 text-sm text-black/80">
-                <ShieldCheck className="h-4 w-4 text-black/60" />
+              <p className="mt-2 inline-flex items-center gap-2 text-sm text-black">
+                <ShieldCheck className="h-4 w-4 text-black" />
                 {isAdvanced ? "Active" : isAdvancedInactive ? "Inactive" : "Not subscribed"}
               </p>
               {isAdvanced && renewal ? (
-                <p className="mt-2 text-xs text-black/70">
+                <p className="mt-2 text-xs text-black">
                   Renews on {renewal.toLocaleDateString()}
                 </p>
               ) : null}
               {isAdvancedInactive ? (
-                <p className="mt-2 text-xs text-black/70">
+                <p className="mt-2 text-xs text-black">
                   Your Advanced subscription is not active right now.
                 </p>
               ) : null}

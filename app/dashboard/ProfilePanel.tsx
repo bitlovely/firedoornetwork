@@ -96,14 +96,14 @@ export function ProfilePanel({
   }
 
   const field =
-    "mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black placeholder:text-black/40 outline-none ring-0 transition focus:border-accent/60 focus:ring-2 focus:ring-accent/20";
+    "mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black placeholder:text-black outline-none ring-0 transition focus:border-accent/60 focus:ring-2 focus:ring-accent/20";
 
   return (
     <section className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm sm:p-8">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="font-display text-xl font-extrabold tracking-tight">Profile</h2>
-          <p className="mt-1 text-sm text-black/70">
+          <p className="mt-1 text-sm text-black">
             Update your account and public-facing details.
           </p>
         </div>
@@ -112,7 +112,7 @@ export function ProfilePanel({
       <form onSubmit={onSubmit} className="mt-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="text-sm">
-            <span className="text-black/80">Full name</span>
+            <span className="text-black">Full name</span>
             <input
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -122,7 +122,7 @@ export function ProfilePanel({
           </label>
 
           <label className="text-sm">
-            <span className="text-black/80">Contact email</span>
+            <span className="text-black">Contact email</span>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -133,7 +133,7 @@ export function ProfilePanel({
           </label>
 
           <label className="text-sm">
-            <span className="text-black/80">Company name</span>
+            <span className="text-black">Company name</span>
             <input
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
@@ -142,7 +142,7 @@ export function ProfilePanel({
           </label>
 
           <label className="text-sm">
-            <span className="text-black/80">Phone</span>
+            <span className="text-black">Phone</span>
             <input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -155,7 +155,7 @@ export function ProfilePanel({
 
         <div className="mt-4">
           <label className="text-sm">
-            <span className="text-black/80">Company logo / photo</span>
+            <span className="text-black">Company logo / photo</span>
             <input
               type="file"
               accept="image/*"
@@ -163,7 +163,7 @@ export function ProfilePanel({
               className="mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-black file:mr-4 file:rounded-xl file:border-0 file:bg-black/5 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-black hover:file:bg-black/10"
             />
           </label>
-          <p className="mt-2 text-xs text-black/70">
+          <p className="mt-2 text-xs text-black">
             Tip: this is used as your dashboard logo and can appear on your directory
             profile.
           </p>

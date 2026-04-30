@@ -63,7 +63,7 @@ function statusBadge(status: string) {
     case "pending":
       return `${base} border-amber-600/25 bg-amber-600/10 text-amber-900`;
     default:
-      return `${base} border-black/10 bg-black/5 text-black/80`;
+      return `${base} border-black/10 bg-black/5 text-black`;
   }
 }
 
@@ -74,7 +74,7 @@ function verifyPill(ok: boolean | undefined) {
       Verified
     </span>
   ) : (
-    <span className="inline-flex items-center gap-1 rounded-full border border-black/10 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/70">
+    <span className="inline-flex items-center gap-1 rounded-full border border-black/10 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black">
       <Circle className="h-3.5 w-3.5" />
       Pending
     </span>
@@ -239,6 +239,12 @@ export default function DashboardPage() {
 
   const certCount = app ? toArray(app.certification_paths).length : 0;
   const docCount = app ? certCount + 1 + (app.dbs_path ? 1 : 0) : 0;
+  const coverageCount = app
+    ? app.areas_covered
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean).length
+    : 0;
 
   return (
     <main className="relative min-h-dvh w-full bg-[#f3f4f6] text-black">
@@ -267,7 +273,7 @@ export default function DashboardPage() {
             </span>
             <div>
               <p className="font-display text-lg font-extrabold leading-none">Dashboard</p>
-              <p className="mt-1 text-xs text-black/70">Affiliate</p>
+              <p className="mt-1 text-xs text-black">Affiliate</p>
             </div>
           </div>
 
@@ -278,7 +284,7 @@ export default function DashboardPage() {
               className={`flex w-full items-center gap-3 rounded-2xl border border-black/10 px-4 py-3 text-left transition-colors ${
                 activeView === "overview"
                   ? "bg-black/5 text-black"
-                  : "bg-white text-black/80 hover:bg-black/5"
+                  : "bg-white text-black hover:bg-black/5"
               }`}
             >
               <LayoutDashboard className="h-4 w-4" />
@@ -290,7 +296,7 @@ export default function DashboardPage() {
               className={`flex w-full items-center gap-3 rounded-2xl border border-black/10 px-4 py-3 text-left transition-colors ${
                 activeView === "profile"
                   ? "bg-black/5 text-black"
-                  : "bg-white text-black/80 hover:bg-black/5"
+                  : "bg-white text-black hover:bg-black/5"
               }`}
             >
               <UserRound className="h-4 w-4" />
@@ -302,7 +308,7 @@ export default function DashboardPage() {
               className={`flex w-full items-center gap-3 rounded-2xl border border-black/10 px-4 py-3 text-left transition-colors ${
                 activeView === "subscription"
                   ? "bg-black/5 text-black"
-                  : "bg-white text-black/80 hover:bg-black/5"
+                  : "bg-white text-black hover:bg-black/5"
               }`}
             >
               <CreditCard className="h-4 w-4" />
@@ -339,7 +345,7 @@ export default function DashboardPage() {
                       ? "Subscription"
                       : "Affiliate dashboard"}
                 </h1>
-                <p className="mt-1 text-sm text-black/70">
+                <p className="mt-1 text-sm text-black">
                   {activeView === "profile"
                     ? "Manage your account details and company profile."
                     : activeView === "subscription"
@@ -348,8 +354,8 @@ export default function DashboardPage() {
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="hidden sm:flex items-center gap-2 rounded-2xl border border-black/10 bg-black/5 px-4 py-2 text-sm text-black/75">
-                  <BarChart3 className="h-4 w-4 text-black/60" />
+                <div className="hidden sm:flex items-center gap-2 rounded-2xl border border-black/10 bg-black/5 px-4 py-2 text-sm text-black">
+                  <BarChart3 className="h-4 w-4 text-black" />
                   {activeView === "profile"
                     ? "Profile"
                     : activeView === "subscription"
@@ -370,7 +376,7 @@ export default function DashboardPage() {
                         <BadgeCheck className="h-5 w-5 text-accent" />
                       </span>
                       <div>
-                        <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                        <p className="text-xs font-semibold tracking-wider text-black uppercase">
                           Status
                         </p>
                         <div className="mt-1">
@@ -391,14 +397,14 @@ export default function DashboardPage() {
                       <Download className="h-5 w-5 text-accent" />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Documents
                       </p>
                       <div className="mt-1 flex items-end gap-2">
                         <p className="font-display text-3xl font-extrabold leading-none">
                           {app ? docCount : "—"}
                         </p>
-                        <p className="text-xs font-semibold text-black/60">
+                        <p className="text-xs font-semibold text-black">
                           Certs, insurance, DBS
                         </p>
                       </div>
@@ -412,12 +418,17 @@ export default function DashboardPage() {
                       <MapPin className="h-5 w-5 text-accent" />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Coverage
                       </p>
-                      <p className="mt-1 text-sm leading-relaxed text-black/80 line-clamp-2">
-                        {app ? app.areas_covered : "—"}
-                      </p>
+                      <div className="mt-1 flex items-end gap-2">
+                        <p className="font-display text-3xl font-extrabold leading-none">
+                          {app ? coverageCount : "—"}
+                        </p>
+                        <p className="text-xs font-semibold text-black">
+                          {app ? "areas" : ""}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -437,10 +448,10 @@ export default function DashboardPage() {
                         </Link>
                       ) : (
                         <>
-                          <p className="text-xs font-semibold tracking-wider text-black/60 uppercase">
+                        <p className="text-xs font-semibold tracking-wider text-black uppercase">
                             Profile
                           </p>
-                          <p className="mt-2 text-sm text-black/80">
+                        <p className="mt-2 text-sm text-black">
                             Available after approval.
                           </p>
                         </>
@@ -453,7 +464,7 @@ export default function DashboardPage() {
           <div className="mt-6 space-y-6">
             {pending ? (
               <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-sm">
-                <p className="text-sm text-black/70">Loading…</p>
+                <p className="text-sm text-black">Loading…</p>
               </div>
             ) : error ? (
               <div
@@ -469,7 +480,7 @@ export default function DashboardPage() {
                 >
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
-                    <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                    <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Status
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-3">
@@ -477,60 +488,60 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Application ID
                       </p>
-                      <p className="mt-2 font-mono text-xs text-black/70">{app.id}</p>
+                      <p className="mt-2 font-mono text-xs text-black">{app.id}</p>
                     </div>
                   </div>
 
                   <div className="mt-8 grid gap-4 sm:grid-cols-2">
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Name
                       </p>
-                      <p className="mt-1 text-sm text-black/80">{app.full_name}</p>
+                      <p className="mt-1 text-sm text-black">{app.full_name}</p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Company
                       </p>
-                      <p className="mt-1 text-sm text-black/80">{app.company_name}</p>
+                      <p className="mt-1 text-sm text-black">{app.company_name}</p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Email
                       </p>
-                      <p className="mt-1 text-sm text-black/80">{app.email}</p>
+                      <p className="mt-1 text-sm text-black">{app.email}</p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Phone
                       </p>
-                      <p className="mt-1 text-sm text-black/80">{app.phone}</p>
+                      <p className="mt-1 text-sm text-black">{app.phone}</p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Location
                       </p>
-                      <p className="mt-1 inline-flex items-center gap-2 text-sm text-black/80">
-                        <MapPin className="h-4 w-4 text-black/60" />
+                      <p className="mt-1 inline-flex items-center gap-2 text-sm text-black">
+                        <MapPin className="h-4 w-4 text-black" />
                         {app.postcode}
                       </p>
                     </div>
                     <div className="rounded-2xl border border-black/10 bg-black/5 p-4">
-                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Experience
                       </p>
-                      <p className="mt-1 text-sm text-black/80">{app.years_experience} years</p>
+                      <p className="mt-1 text-sm text-black">{app.years_experience} years</p>
                     </div>
                   </div>
 
                   <div className="mt-6 rounded-2xl border border-black/10 bg-black/5 p-4">
-                    <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                    <p className="text-xs font-semibold tracking-wider text-black uppercase">
                       Coverage area
                     </p>
-                    <p className="mt-2 whitespace-pre-wrap text-sm text-black/80">
+                    <p className="mt-2 whitespace-pre-wrap text-sm text-black">
                       {app.areas_covered}
                     </p>
                   </div>
@@ -541,10 +552,10 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-xs font-semibold tracking-wider text-black/70 uppercase">
+                      <p className="text-xs font-semibold tracking-wider text-black uppercase">
                         Documents
                       </p>
-                      <p className="mt-1 text-sm text-black/70">
+                      <p className="mt-1 text-sm text-black">
                         Download your uploaded files.
                       </p>
                     </div>
@@ -552,7 +563,7 @@ export default function DashboardPage() {
 
                   <div className="mt-5 space-y-2">
                     <div className="flex items-center justify-between gap-3 rounded-2xl border border-black/10 bg-black/5 px-4 py-3">
-                      <span className="text-sm text-black/80">Certifications</span>
+                      <span className="text-sm text-black">Certifications</span>
                       <div className="flex items-center gap-2">
                         {verifyPill(app.verified_certification)}
                       </div>
@@ -570,7 +581,7 @@ export default function DashboardPage() {
                       </button>
                     ))}
                     <div className="flex items-center justify-between gap-3 rounded-2xl border border-black/10 bg-black/5 px-4 py-3">
-                      <span className="text-sm text-black/80">Insurance</span>
+                      <span className="text-sm text-black">Insurance</span>
                       <div className="flex items-center gap-2">
                         {verifyPill(app.verified_insurance)}
                         <button
@@ -586,7 +597,7 @@ export default function DashboardPage() {
                     </div>
                     {app.dbs_path ? (
                       <div className="flex items-center justify-between gap-3 rounded-2xl border border-black/10 bg-black/5 px-4 py-3">
-                        <span className="text-sm text-black/80">DBS</span>
+                        <span className="text-sm text-black">DBS</span>
                         <div className="flex items-center gap-2">
                           {verifyPill(app.identity_checked)}
                           <button
@@ -603,14 +614,14 @@ export default function DashboardPage() {
                     ) : null}
                   </div>
 
-                  <div className="mt-5 rounded-2xl border border-black/10 bg-black/5 p-4 text-xs text-black/70">
+                  <div className="mt-5 rounded-2xl border border-black/10 bg-black/5 p-4 text-xs text-black">
                     Downloads are secure links that expire quickly.
                   </div>
                 </section>
               </div>
             ) : (
               <div className="rounded-3xl border border-black/10 bg-white p-7 shadow-sm">
-                <p className="text-sm text-black/70">
+                <p className="text-sm text-black">
                   You’re signed in, but not registered as an affiliate yet.
                 </p>
                 <button
