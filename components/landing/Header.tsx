@@ -57,7 +57,7 @@ export function Header() {
                 />
               </span>
               <span className="font-display text-base font-bold tracking-tight sm:text-lg">
-                FireDoor <span className="text-accent">Inspection</span> Network
+                FireDoor Inspection <span className="text-accent">Network</span>
               </span>
             </Link>
 

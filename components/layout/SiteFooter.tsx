@@ -28,7 +28,7 @@ export function SiteFooter() {
             <Link href="/" className="flex items-center gap-2">
               <LogoMark />
               <span className="font-display text-lg font-bold">
-                FireDoor <span className="text-accent">Inspection</span> Network
+                FireDoor Inspection <span className="text-accent">Network</span>
               </span>
             </Link>
             <p className="mt-4 max-w-sm text-sm text-white/60">
