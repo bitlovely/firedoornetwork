@@ -128,7 +128,7 @@ export function LandingPage() {
               </span>
             </h1>
             <p className="mt-6 mx-auto max-w-2xl text-lg text-balance text-white/70 sm:text-xl">
-              Nationwide inspection opportunities for verified fire door surveyors and
+              Nationwide network opportunities for verified fire door surveyors and
               inspectors. Get discovered by clients who need compliant fire door work.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
